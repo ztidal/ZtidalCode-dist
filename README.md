@@ -21,8 +21,13 @@ irm https://x.ai/cli/install.ps1 | iex
 
 Then `grok login` once.
 
-**2. ZtidalCode.** Download the latest `ZtidalCode_<version>_x64-setup.exe` (or the `.msi`) from
-[Releases](https://github.com/ztidal/ZtidalCode-dist/releases). Installs per-user; no admin needed.
+**2. ZtidalCode.** Download the latest `ZtidalCode_<version>_x64-setup.exe` from
+[Releases](https://github.com/ztidal/ZtidalCode-dist/releases). It installs per-user, needs no admin, and
+from then on updates itself: one click, no prompt, and it relaunches when the update is in.
+
+> There is also an `.msi` on every release. Take it only if you are rolling ZtidalCode out for other
+> people — it installs per-machine, so it needs an administrator to install **and again for every
+> update**. The `.exe` never asks.
 
 > Our installers are **not** Authenticode-signed, so SmartScreen will warn about an unknown publisher.
 > Check your download against `SHA256SUMS.txt` on the release first:
@@ -133,8 +138,8 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 
 | Asset | What it is |
 | --- | --- |
-| `ZtidalCode_<version>_x64-setup.exe` | NSIS installer, per-user — what the updater installs |
-| `ZtidalCode_<version>_x64_en-US.msi` | MSI, for deployment tooling |
+| `ZtidalCode_<version>_x64-setup.exe` | NSIS installer, per-user, no admin — take this one |
+| `ZtidalCode_<version>_x64_en-US.msi` | MSI for deployment tooling; per-machine, admin on every update |
 | `*.sig` | minisign signature for the matching artifact |
 | `latest.json` | Updater manifest — the app reads this from the *latest* release |
 | `SHA256SUMS.txt` | Hashes for manual verification |
