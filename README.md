@@ -164,7 +164,7 @@ In the title bar:
 | | |
 | --- | --- |
 | **New Window** | A second window for a different project. Each is its own process; they share your session and preference files safely. |
-| **Theme** | Light, Dark, **Pure Dark** and System. Pure Dark unless you say otherwise: a true black ground, for OLED panels and dark rooms. |
+| **Theme** | Light, Dark, **Pure Dark**, **Warm Gold** and System. Pure Dark unless you say otherwise: a true black ground, for OLED panels and dark rooms. Warm Gold is that same black with the temperature flipped — gold titles, a gold-to-rose accent, your messages warm against the agent's cool. |
 | **Check for Updates** | Also runs at launch. Signature-verified before it installs. |
 
 ### Slash commands
