@@ -112,6 +112,25 @@ message too: paste a screenshot, press enter.
 usually one thought and a stray newline used to swallow it. `↑` on an empty composer browses your
 prompt history.
 
+### While the agent is working
+
+You do not have to wait for a turn to finish. Type and press enter — the send button reads **Queue**
+while the agent is busy, so it is clear which one you are doing.
+
+Queued messages wait in the timeline, in the order they will run, rather than in a panel of their own.
+Each one carries its own controls:
+
+| | |
+| --- | --- |
+| **↑ ↓** | Run it earlier or later |
+| **Edit** | Change the wording before it runs |
+| **Send now** | Interrupt the current turn and run this one immediately |
+| **Remove** · **Clear all** | Drop this one, or the whole queue |
+
+A message appears the instant you send it, before `grok` has acknowledged it — marked **Sending…**
+until it does. Until this release the text left the composer and showed up nowhere for a round trip,
+which read as the message having been swallowed.
+
 ### Keeping track
 
 - **Pin** a session and it leaves its project for a **Pinned** header above them all. That header has
