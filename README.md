@@ -137,16 +137,17 @@ which read as the message having been swallowed.
   no collapse arrow, because a pin behind a closed one is a pin you cannot see.
 - **Archive** one and it moves to an **Archived** header at the bottom, closed. Nothing on disk changes,
   and it comes back the same way.
-- A session the app is currently driving is marked in the rail, and distinguished from one running
-  elsewhere — in another window, or in a terminal.
-- **Needs input** appears on a card when the agent is waiting on you.
+- Every row carries a small mark, and its colour is the task's state: hollow for one that is simply
+  sitting there, filled and breathing while a turn runs, gold when the agent is waiting on you, and
+  two more for a task being driven — by this window, or by another window or a terminal.
+- **Needs input** is the one state that also says so in words, because it is a request rather than a
+  state. Hovering any row names its state.
 
-Cards are one line. The project, branch, time and token counts belong to whichever task you have open,
-and appear on that card alone — they are answers to questions you only ask about the task you are in.
-Running and Needs input stay visible on every card, because those are the two worth seeing without
-opening anything. A name too long for the rail shows in full when you hover it.
+Rows are one line. The project, branch, time and token counts belong to whichever task you have open
+and appear on that row alone — they are answers to questions you only ask about the task you are in.
+A name too long for the rail shows in full when you hover it.
 
-The **⋮** at a card's top right — or a right-click anywhere on it — opens its menu:
+The **⋮** at a row's right — or a right-click anywhere on it — opens its menu:
 
 | | |
 | --- | --- |
