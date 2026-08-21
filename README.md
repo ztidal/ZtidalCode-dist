@@ -4,6 +4,9 @@ A desktop workspace for xAI's [Grok Build](https://x.ai/cli) coding agent: run s
 side, follow each one in a live timeline, and see where your credits go. `grok` stays in charge —
 ZtidalCode drives it over [ACP](https://spec.acp.dev) and runs no agent loop of its own.
 
+**[ztidal.github.io/ZtidalCode-dist](https://ztidal.github.io/ZtidalCode-dist/)** — what it looks like
+and what it does, in one page. Send that to someone before this one.
+
 This repository holds the installers. The source is private; it is a hardened fork of
 [PinkCode](https://github.com/3xian/PinkCode). This repo is public for one reason: the in-app updater
 fetches `latest.json` anonymously, and release assets on a private repository require authentication.
@@ -32,7 +35,7 @@ from then on updates itself: one click, no prompt, and it relaunches when the up
 > Our installers are **not** Authenticode-signed, so SmartScreen will warn about an unknown publisher.
 > Check your download against `SHA256SUMS.txt` on the release first:
 > ```powershell
-> Get-FileHash .\ZtidalCode_0.0.8_x64-setup.exe -Algorithm SHA256
+> Get-FileHash .\ZtidalCode_*_x64-setup.exe -Algorithm SHA256
 > ```
 > In-app updates carry a minisign signature and are verified against a key compiled into the build, so
 > an update cannot be substituted even though these assets are public.
@@ -83,17 +86,56 @@ Approving a **plan** and answering a question the agent asks you are always prom
 Opening a session lands on the latest activity. Scroll up and a **Jump to latest** button appears.
 Filter chips narrow the stream to one kind of event; **Load earlier activity** pages backwards.
 
+The timeline follows a reply as it is written, and lets go the moment you scroll up to read something
+further back.
+
+### Attaching files
+
+**Ctrl+V** in the composer takes more than text.
+
+- **Files copied in Explorer.** Copy anything, paste it in. Each becomes a chip — a thumbnail for
+  pictures, the extension for everything else. Nothing is copied anywhere: the agent is pointed at the
+  file where it already lives, whatever drive that is on.
+- **A screenshot.** Win+Shift+S, then paste. This is the one case with no file behind it, so it is
+  written to `%USERPROFILE%\.ztidalcode\pasted\` — never into your project.
+- **Text** is untouched.
+
+The **×** on a chip's corner removes it. Paths join the message only when you send, so removing a chip
+removes the file and leaves nothing in your sentence to delete by hand. Attachments with no text are a
+message too: paste a screenshot, press enter.
+
+> **What the agent can do with an image.** It cannot see one — `grok` does not accept images over the
+> protocol, and reading an image file as text fails. It writes code to inspect it instead, and is good
+> at that. So *"read these files"* works properly; *"what does this screenshot say"* does not.
+
 `Enter` sends. **`Ctrl+Enter` inserts a newline** — the reverse of most chat apps, because a prompt is
 usually one thought and a stray newline used to swallow it. `↑` on an empty composer browses your
 prompt history.
 
 ### Keeping track
 
-- **Pin** a session (the pin on its card) to sort it to the top. Its project sorts up with it and opens
-  on launch, so a pin always leads somewhere.
+- **Pin** a session and it leaves its project for a **Pinned** header above them all. That header has
+  no collapse arrow, because a pin behind a closed one is a pin you cannot see.
+- **Archive** one and it moves to an **Archived** header at the bottom, closed. Nothing on disk changes,
+  and it comes back the same way.
 - A session the app is currently driving is marked in the rail, and distinguished from one running
   elsewhere — in another window, or in a terminal.
 - **Needs input** appears on a card when the agent is waiting on you.
+
+Cards are one line. The project, branch, time and token counts belong to whichever task you have open,
+and appear on that card alone — they are answers to questions you only ask about the task you are in.
+Running and Needs input stay visible on every card, because those are the two worth seeing without
+opening anything. A name too long for the rail shows in full when you hover it.
+
+The **⋮** at a card's top right — or a right-click anywhere on it — opens its menu:
+
+| | |
+| --- | --- |
+| **Open in new window** | A second window, straight onto that task. |
+| **Pin** / **Unpin** | Moves it to the `Pinned` header, or back. |
+| **Rename** | Your own name over the agent's. Clear the field to get the agent's back; it keeps updating underneath either way. |
+| **Archive** | To the `Archived` header. Reversible, and nothing on disk moves. |
+| **Delete** | Moves the task's folder to `.trash` inside the session store. It leaves the list and `grok` stops seeing it, but nothing is erased — move the folder back and it all returns. |
 
 ### Settings
 
@@ -102,7 +144,7 @@ In the title bar:
 | | |
 | --- | --- |
 | **New Window** | A second window for a different project. Each is its own process; they share your session and preference files safely. |
-| **Theme** | Light / Dark / System. Dark unless you say otherwise. |
+| **Theme** | Light, Dark, **Pure Dark** and System. Pure Dark unless you say otherwise: a true black ground, for OLED panels and dark rooms. |
 | **Check for Updates** | Also runs at launch. Signature-verified before it installs. |
 
 ### Slash commands
@@ -129,8 +171,8 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 | | |
 | --- | --- |
 | `%USERPROFILE%\.grok` | Grok Build's own sessions and credentials. ZtidalCode reads these; it does not own them. |
-| `%USERPROFILE%\.ztidalcode` | Per-task permission modes and usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
-| Browser storage | Theme, rail widths, pins, which projects are open. Per-machine, and safe to lose. |
+| `%USERPROFILE%\.ztidalcode` | Per-task permission modes, the names you give sessions, pasted screenshots, and the usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
+| Browser storage | Theme, rail widths, pins, the archive, which projects are open. Per-machine, and safe to lose — which is why the names you type are not kept here. |
 
 ---
 
