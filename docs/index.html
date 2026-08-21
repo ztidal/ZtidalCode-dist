@@ -39,6 +39,10 @@
         --pine: #3e8fb0;
         --foam: #9ccfd8;
         --iris: #c4a7e7;
+        /* The mark's own blue, at the lightness the app carries it on a
+           dark ground — #0277bd is 58% of the logo, but that is a fill
+           colour, too dark to read as text on this page. */
+        --brand: #69b7e7;
 
         --font: "Segoe UI", system-ui, -apple-system, "SF Pro Text", sans-serif;
         --mono: Consolas, "Cascadia Mono", ui-monospace, "SF Mono", Menlo,
@@ -196,7 +200,7 @@
       h1 .accent {
         background: linear-gradient(
           92deg,
-          var(--rose) 0%,
+          var(--brand) 0%,
           var(--iris) 52%,
           var(--foam) 100%
         );
@@ -319,7 +323,7 @@
         gap: 6px;
       }
       .group.pinned {
-        color: var(--rose);
+        color: var(--brand);
       }
       .group .count {
         margin-left: auto;
@@ -810,7 +814,7 @@
             </p>
           </div>
           <div class="feat">
-            <h3 data-zh='<span class="pip" style="background: var(--rose)"></span>话不用等它说完'><span class="pip" style="background: var(--rose)"></span>Say the next thing now</h3>
+            <h3 data-zh='<span class="pip" style="background: var(--brand)"></span>话不用等它说完'><span class="pip" style="background: var(--brand)"></span>Say the next thing now</h3>
             <p data-zh="不必等这一回合结束。agent 还在干活时直接发，消息就停在时间线上它将要运行的位置 —— 可以调顺序、改内容、撤掉，也可以打断当前回合让它立刻跑。">
               You do not have to wait for a turn to finish. Send while the agent
               is working and the message waits in the timeline where it will
