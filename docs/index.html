@@ -123,6 +123,21 @@
         color: var(--text);
         text-decoration: none;
       }
+      #lang {
+        padding: 3px 10px;
+        border: 1px solid var(--overlay);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--subtle);
+        font: inherit;
+        font-size: 13px;
+        line-height: 1.5;
+        cursor: pointer;
+      }
+      #lang:hover {
+        border-color: var(--subtle);
+        color: var(--text);
+      }
       @media (max-width: 640px) {
         .nav-links a:not(.keep) {
           display: none;
@@ -323,38 +338,30 @@
         background: var(--overlay);
         color: var(--text);
       }
-      .card.run::before {
-        content: "";
-        position: absolute;
-        left: 2px;
-        top: 8px;
-        bottom: 8px;
-        width: 2px;
-        border-radius: 2px;
-        background: var(--pine);
-      }
-      .card.wait::before {
-        content: "";
-        position: absolute;
-        left: 2px;
-        top: 8px;
-        bottom: 8px;
-        width: 2px;
-        border-radius: 2px;
-        background: var(--gold);
-      }
-      .tag {
+      .mark {
         display: inline-block;
-        margin-right: 6px;
-        font-size: 10px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
+        width: 6px;
+        height: 6px;
+        margin-right: 9px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        border: 1px solid var(--subtle);
+        border-radius: 50%;
+        opacity: 0.75;
       }
-      .tag.run {
-        color: var(--pine);
+      .mark.live {
+        border-color: var(--foam);
+        opacity: 1;
       }
-      .tag.wait {
-        color: var(--gold);
+      .mark.run {
+        border-color: var(--pine);
+        background: var(--pine);
+        opacity: 1;
+      }
+      .mark.wait {
+        border-color: var(--gold);
+        background: var(--gold);
+        opacity: 1;
       }
 
       .stream {
@@ -633,14 +640,20 @@
           ZtidalCode
         </a>
         <nav class="nav-links">
-          <a href="#features">Features</a>
-          <a href="#install">Install</a>
-          <a href="https://github.com/ztidal/ZtidalCode-dist#using-it">Guide</a>
+          <a href="#features" data-zh="功能">Features</a>
+          <a href="#install" data-zh="安装">Install</a>
+          <a
+            href="https://github.com/ztidal/ZtidalCode-dist#using-it"
+            data-zh="指南"
+            >Guide</a
+          >
           <a
             class="keep"
             href="https://github.com/ztidal/ZtidalCode-dist/releases"
+            data-zh="版本"
             >Releases</a
           >
+          <button id="lang" type="button">中文</button>
         </nav>
       </div>
     </header>
@@ -648,13 +661,14 @@
     <main id="top">
       <section class="wrap hero">
         <span class="eyebrow">
-          Windows desktop · <b id="version">latest release</b>
+          <span data-zh="Windows 桌面">Windows desktop</span> ·
+          <b id="version">latest release</b>
         </span>
-        <h1>
+        <h1 data-zh='多个 Grok Build 任务。<br /><span class="accent">一个窗口。</span>'>
           Several Grok Build tasks.<br />
           <span class="accent">One window.</span>
         </h1>
-        <p class="lede">
+        <p class="lede" data-zh="xAI 编码 agent 的桌面工作台。主导权始终在 <code>grok</code> 手里 —— ZtidalCode 通过 ACP 驱动它，自己不跑任何 agent 循环。">
           A desktop workspace for xAI's coding agent. <code>grok</code> stays in
           charge — ZtidalCode drives it over ACP and runs no agent loop of its
           own.
@@ -666,15 +680,16 @@
             id="download"
             href="https://github.com/ztidal/ZtidalCode-dist/releases/latest"
           >
-            Download for Windows
+            <span id="dl-label" data-zh="下载 Windows 版">Download for Windows</span><span id="dl-size"></span>
           </a>
           <a
             class="btn ghost"
             href="https://github.com/ztidal/ZtidalCode-dist#using-it"
+            data-zh="查看指南"
             >Read the guide</a
           >
         </div>
-        <p class="cta-note">
+        <p class="cta-note" data-zh="单用户安装，不需要管理员权限。装好之后自己从这里更新。">
           Per-user install, no administrator. Updates itself from here after
           that.
         </p>
@@ -688,16 +703,16 @@
           <div class="panes">
             <div class="rail">
               <div class="group pinned">Pinned <span class="count">1</span></div>
-              <div class="card on">updater end-to-end</div>
+              <div class="card on"><span class="mark live"></span>updater end-to-end</div>
 
               <div class="group">▾ 000_tmp <span class="count">14</span></div>
               <div class="card run">
-                <span class="tag run">running</span>refactor the parser
+                <span class="mark run"></span>refactor the parser
               </div>
               <div class="card wait">
-                <span class="tag wait">needs input</span>bump deps
+                <span class="mark wait"></span>bump deps
               </div>
-              <div class="card">session rail polish</div>
+              <div class="card"><span class="mark"></span>session rail polish</div>
 
               <div class="group">▸ 2026_ttm <span class="count">3</span></div>
               <div class="group">▸ Archived <span class="count">6</span></div>
@@ -746,15 +761,15 @@
       </section>
 
       <section class="wrap block" id="features">
-        <h2>Built for keeping several things moving</h2>
-        <p class="section-lede">
+        <h2 data-zh="为同时推进多件事而做">Built for keeping several things moving</h2>
+        <p class="section-lede" data-zh="终端里最难的两件事：同时跑多个 agent，以及随时知道每一个在做什么。">
           The two things a terminal makes hard: running more than one agent at
           once, and knowing what any of them is doing.
         </p>
         <div class="grid">
           <div class="feat">
-            <h3><span class="pip" style="background: var(--pine)"></span>Parallel tasks</h3>
-            <p>
+            <h3 data-zh='<span class="pip" style="background: var(--pine)"></span>并行任务'><span class="pip" style="background: var(--pine)"></span>Parallel tasks</h3>
+            <p data-zh="一块看板上想开多少个 Grok Build 会话都行。每个在你第一次发消息时才通过 ACP 连上 <code>grok</code>。已有的会话直接从 <code>~/.grok</code> 读出来，不需要导入。">
               Work across as many Grok Build sessions as you like from one
               board. Each connects to <code>grok</code> over ACP when you first
               send to it. Existing sessions are picked up from
@@ -762,39 +777,48 @@
             </p>
           </div>
           <div class="feat">
-            <h3><span class="pip" style="background: var(--foam)"></span>A readable timeline</h3>
-            <p>
+            <h3 data-zh='<span class="pip" style="background: var(--foam)"></span>读得下去的时间线'><span class="pip" style="background: var(--foam)"></span>A readable timeline</h3>
+            <p data-zh="消息、思考、工具调用、命令输出和计划在同一条流里。回答一边写它一边跟着走 —— 而你往上翻去看前面的内容时，它立刻松手。">
               Messages, thoughts, tool calls, shell output and plans in one
               stream that follows a reply as it is written — and lets go the
               moment you scroll up to read something further back.
             </p>
           </div>
           <div class="feat">
-            <h3><span class="pip" style="background: var(--gold)"></span>Where the credits go</h3>
-            <p>
+            <h3 data-zh='<span class="pip" style="background: var(--gold)"></span>额度花在哪里'><span class="pip" style="background: var(--gold)"></span>Where the credits go</h3>
+            <p data-zh="按周的用量、分产品的明细、7 天 token 曲线，以及回合进行中实时的 token 与花费。">
               Weekly usage with a per-product breakdown, a 7-day token series,
               and live tokens and cost while a turn is running.
             </p>
           </div>
           <div class="feat">
-            <h3><span class="pip" style="background: var(--rose)"></span>Paste files in</h3>
-            <p>
+            <h3 data-zh='<span class="pip" style="background: var(--rose)"></span>直接粘贴文件'><span class="pip" style="background: var(--rose)"></span>Paste files in</h3>
+            <p data-zh="在资源管理器里复制任何东西，粘进输入框 —— 它变成一个指向文件原处的小卡片。截图也一样。不会在别处再存一份。">
               Copy anything in Explorer and paste it into the composer — it
               becomes a chip pointing at the file where it already lives.
               Screenshots too. Nothing is copied to a second place.
             </p>
           </div>
           <div class="feat">
-            <h3><span class="pip" style="background: var(--iris)"></span>A rail you can keep</h3>
-            <p>
+            <h3 data-zh='<span class="pip" style="background: var(--iris)"></span>理得清的任务栏'><span class="pip" style="background: var(--iris)"></span>A rail you can keep</h3>
+            <p data-zh="一个任务一行，按项目分组。常回来的置顶，名字可以按自己的话改，做完的归档 —— 任何一个都能在第二个窗口里打开。">
               One line per task, grouped by project. Pin what you keep coming
               back to, rename anything in your own words, archive what is
               finished — and open any of it in a second window.
             </p>
           </div>
           <div class="feat">
-            <h3><span class="pip" style="background: var(--love)"></span>Files and Git beside it</h3>
-            <p>
+            <h3 data-zh='<span class="pip" style="background: var(--rose)"></span>话不用等它说完'><span class="pip" style="background: var(--rose)"></span>Say the next thing now</h3>
+            <p data-zh="不必等这一回合结束。agent 还在干活时直接发，消息就停在时间线上它将要运行的位置 —— 可以调顺序、改内容、撤掉，也可以打断当前回合让它立刻跑。">
+              You do not have to wait for a turn to finish. Send while the agent
+              is working and the message waits in the timeline where it will
+              run — reorder it, edit it, drop it, or interrupt the current turn
+              and run it immediately.
+            </p>
+          </div>
+          <div class="feat">
+            <h3 data-zh='<span class="pip" style="background: var(--love)"></span>文件与 Git 就在旁边'><span class="pip" style="background: var(--love)"></span>Files and Git beside it</h3>
+            <p data-zh="浏览目录树、预览文件、逐块审查 agent 改了什么、一块一块地暂存或撤销，然后提交 —— 全程不用离开当前任务。">
               Browse the tree, preview a file, review the agent's hunks, stage
               or unstage them one at a time, and commit — without leaving the
               task.
@@ -804,16 +828,16 @@
       </section>
 
       <section class="wrap block" id="install">
-        <h2>Two steps</h2>
-        <p class="section-lede">
+        <h2 data-zh="两步装好">Two steps</h2>
+        <p class="section-lede" data-zh="ZtidalCode 从不经手你的凭据 —— 它复用 <code>grok login</code> 建立的那个会话。">
           ZtidalCode never handles your credentials — it reuses the session
           <code>grok login</code> creates.
         </p>
         <div class="steps">
           <div class="step">
             <div class="n">1</div>
-            <h3>Install Grok Build</h3>
-            <p>
+            <h3 data-zh="安装 Grok Build">Install Grok Build</h3>
+            <p data-zh="需要 SuperGrok、X Premium+ 或 SuperGrok Heavy。然后执行一次 <code>grok login</code>。">
               Needs SuperGrok, X Premium+, or SuperGrok Heavy. Then
               <code>grok login</code> once.
             </p>
@@ -821,8 +845,8 @@
           </div>
           <div class="step">
             <div class="n">2</div>
-            <h3>Install ZtidalCode</h3>
-            <p>
+            <h3 data-zh="安装 ZtidalCode">Install ZtidalCode</h3>
+            <p data-zh="用 <code>.exe</code> 那个。单用户安装、不需要管理员权限，此后自己更新。">
               Take the <code>.exe</code>. It installs per-user, needs no
               administrator, and updates itself from then on.
             </p>
@@ -832,14 +856,14 @@
       </section>
 
       <section class="wrap block">
-        <h2>Two things to know first</h2>
-        <p class="section-lede">
+        <h2 data-zh="有两件事先说在前面">Two things to know first</h2>
+        <p class="section-lede" data-zh="这两件事现在听到，好过以后自己撞上。">
           Both are easier to hear now than to discover later.
         </p>
         <div class="notes">
           <div class="note">
-            <h3>SmartScreen will warn you</h3>
-            <p>
+            <h3 data-zh="SmartScreen 会弹警告">SmartScreen will warn you</h3>
+            <p data-zh="我们的安装包没有 Authenticode 签名，所以 Windows 会说发布者未知。可以用 release 上的 <code>SHA256SUMS.txt</code> 核对你下载到的文件。应用内的更新则由 minisign 签名，并用编译进程序里的公钥校验 —— 即使这些文件是公开的，也没法被掉包。">
               Our installers carry no Authenticode signature, so Windows calls
               the publisher unknown. Check your download against
               <code>SHA256SUMS.txt</code> on the release. Updates from inside
@@ -849,8 +873,8 @@
             </p>
           </div>
           <div class="note">
-            <h3>The agent cannot see images</h3>
-            <p>
+            <h3 data-zh="agent 看不见图片">The agent cannot see images</h3>
+            <p data-zh="<code>grok</code> 在协议层不接受图片。你附一张图，它会改为写代码去读它 —— 这件事它做得不错。所以<em>「读一下这几个文件」</em>是好用的，而<em>「这张截图上写了什么」</em>不行。">
               <code>grok</code> does not accept images over the protocol. Attach
               a picture and it writes code to inspect it instead, which it is
               good at — so <em>"read these files"</em> works properly, while
@@ -863,7 +887,7 @@
 
     <footer>
       <div class="wrap foot">
-        <span>
+        <span data-zh='<a href="https://github.com/3xian/PinkCode">PinkCode</a> 的加固分支，Apache-2.0。'>
           A hardened fork of
           <a href="https://github.com/3xian/PinkCode">PinkCode</a>, Apache-2.0.
         </span>
@@ -878,6 +902,56 @@
     </footer>
 
     <script>
+      /*
+       * Two languages, one DOM. The English is the markup; the Chinese rides
+       * along in `data-zh`, and the English is kept in `data-en` the first time
+       * a switch happens so it can come back. `innerHTML` rather than text,
+       * because several of these lines carry a `<code>` or a link.
+       *
+       * The download button is deliberately split: this owns `#dl-label`, the
+       * release lookup below owns `#dl-size`. They used to be one string, and
+       * whichever ran second erased the other.
+       */
+      (() => {
+        const KEY = "ztidal-lang";
+        const nodes = document.querySelectorAll("[data-zh]");
+        const button = document.getElementById("lang");
+
+        const apply = (lang) => {
+          const zh = lang === "zh";
+          document.documentElement.lang = zh ? "zh-CN" : "en";
+          for (const el of nodes) {
+            if (!el.hasAttribute("data-en")) {
+              el.setAttribute("data-en", el.innerHTML.trim());
+            }
+            el.innerHTML = el.getAttribute(zh ? "data-zh" : "data-en");
+          }
+          button.textContent = zh ? "EN" : "中文";
+          button.setAttribute(
+            "aria-label",
+            zh ? "Switch to English" : "切换到中文",
+          );
+          try {
+            localStorage.setItem(KEY, lang);
+          } catch {
+            // A page that cannot remember the choice still honours this one.
+          }
+        };
+
+        let saved = null;
+        try {
+          saved = localStorage.getItem(KEY);
+        } catch {
+          // Private browsing; fall through to the browser's own preference.
+        }
+        const wantsChinese = /^zh/i.test(navigator.language || "");
+        apply(saved === "zh" || saved === "en" ? saved : wantsChinese ? "zh" : "en");
+
+        button.addEventListener("click", () => {
+          apply(document.documentElement.lang.startsWith("zh") ? "en" : "zh");
+        });
+      })();
+
       /*
        * Name the current release without rebuilding this page for each one.
        * Everything here is decoration over links that already work: if the API
@@ -903,7 +977,7 @@
             const button = document.getElementById("download");
             button.href = setup.browser_download_url;
             const mb = (setup.size / (1024 * 1024)).toFixed(1);
-            button.textContent = `Download for Windows · ${mb} MB`;
+            document.getElementById("dl-size").textContent = ` · ${mb} MB`;
             document.getElementById("latest-name").textContent = setup.name;
           }
         } catch {
