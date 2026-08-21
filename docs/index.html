@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ZtidalCode — a desktop workspace for Grok Build</title>
+    <title data-zh="ZtidalCode —— Grok Build 的桌面工作台">
+      ZtidalCode — a desktop workspace for Grok Build
+    </title>
     <meta
       name="description"
       content="Run several Grok Build tasks side by side, follow each in a live timeline, and see where your credits go. A Windows desktop app that drives xAI's coding agent over ACP."
@@ -922,9 +924,17 @@
           document.documentElement.lang = zh ? "zh-CN" : "en";
           for (const el of nodes) {
             if (!el.hasAttribute("data-en")) {
-              el.setAttribute("data-en", el.innerHTML.trim());
+              el.setAttribute(
+                "data-en",
+                (el.tagName === "META"
+                  ? el.getAttribute("content")
+                  : el.innerHTML
+                ).trim(),
+              );
             }
-            el.innerHTML = el.getAttribute(zh ? "data-zh" : "data-en");
+            const next = el.getAttribute(zh ? "data-zh" : "data-en");
+            if (el.tagName === "META") el.setAttribute("content", next);
+            else el.innerHTML = next;
           }
           button.textContent = zh ? "EN" : "中文";
           button.setAttribute(
