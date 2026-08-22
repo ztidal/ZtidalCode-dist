@@ -191,8 +191,8 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 | | |
 | --- | --- |
 | `%USERPROFILE%\.grok` | Grok Build's own sessions and credentials. ZtidalCode reads these; it does not own them. |
-| `%USERPROFILE%\.ztidalcode` | Per-task permission modes, the names you give sessions, pasted screenshots, and the usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
-| Browser storage | Theme, rail widths, pins, the archive, which projects are open. Per-machine, and safe to lose — which is why the names you type are not kept here. |
+| `%USERPROFILE%\.ztidalcode` | Per-task permission modes, the names you give sessions, pins and the archive, pasted screenshots, logs, and the usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
+| Browser storage | Theme, rail widths, which projects are open. Per-machine, and safe to lose — anything you would mind losing (names, pins, the archive) lives in `.ztidalcode` instead. Existing pins migrate there on first launch of 0.0.35. |
 
 ---
 
