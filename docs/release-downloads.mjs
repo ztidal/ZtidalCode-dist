@@ -23,10 +23,6 @@ function firstMatchingAsset(assets, patterns) {
   return null;
 }
 
-function escapeRegularExpression(value) {
-  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
 export function selectReleaseAssets(release) {
   const parsedVersion = parseVersion(release?.tag_name);
   const version = parsedVersion ? parsedVersion.join(".") : "";
@@ -36,19 +32,15 @@ export function selectReleaseAssets(release) {
   }
 
   const assets = Array.isArray(release?.assets) ? release.assets : [];
-  const releasePrefix = `ZtidalCode_${escapeRegularExpression(version)}_`;
   return {
     version,
     supported: true,
     mac: firstMatchingAsset(assets, [
-      new RegExp(`^${releasePrefix}aarch64\\.dmg$`, "i"),
-      new RegExp(`^${releasePrefix}arm64\\.dmg$`, "i"),
-      new RegExp(`^${releasePrefix}universal\\.dmg$`, "i"),
+      /_aarch64\.dmg$/i,
+      /_arm64\.dmg$/i,
+      /\.dmg$/i,
     ]),
-    windows: firstMatchingAsset(assets, [
-      new RegExp(`^${releasePrefix}x64-setup\\.exe$`, "i"),
-      new RegExp(`^${releasePrefix}x86_64-setup\\.exe$`, "i"),
-    ]),
+    windows: firstMatchingAsset(assets, [/_x64-setup\.exe$/i, /-setup\.exe$/i]),
   };
 }
 
@@ -115,12 +107,7 @@ function setLocalizedLabel(documentLike, id, english, chinese) {
 
 export function renderDownloadModel(documentLike, model) {
   const version = getElement(documentLike, "version");
-  if (version && model.version) {
-    const label = `v${model.version}`;
-    version.setAttribute("data-en", label);
-    version.setAttribute("data-zh", label);
-    version.textContent = label;
-  }
+  if (version && model.version) version.textContent = `v${model.version}`;
 
   setLink(documentLike, "download-mac", model.mac, model.releaseUrl);
   setLink(documentLike, "download-windows", model.windows, model.releaseUrl);

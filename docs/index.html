@@ -724,11 +724,7 @@
             >Read the guide</a
           >
         </div>
-        <div
-          class="cta platform-choices"
-          aria-label="Direct platform downloads"
-          data-aria-zh="直接平台下载"
-        >
+        <div class="cta platform-choices" aria-label="Direct platform downloads">
           <a
             class="btn ghost platform-download"
             id="download-mac"
@@ -953,11 +949,11 @@
           </div>
           <div class="note">
             <h3 data-zh="应用内更新会校验签名">In-app updates verify themselves</h3>
-            <p data-zh="macOS 与 Windows 的更新载荷都带 minisign 签名，并用编译进应用的公钥校验。它独立于 Gatekeeper 和 SmartScreen：这些更新载荷即使公开，也不能在不被发现的情况下替换。">
+            <p data-zh="macOS 与 Windows 的更新载荷都带 minisign 签名，并用编译进应用的公钥校验。它独立于 Gatekeeper 和 SmartScreen：这些 release 文件即使公开，也不能在不被发现的情况下替换。">
               Update payloads on macOS and Windows carry minisign signatures
               and are checked against a public key compiled into the app. This
-              is independent of Gatekeeper and SmartScreen: those updater
-              payloads cannot be substituted without detection.
+              is independent of Gatekeeper and SmartScreen: public release
+              files cannot be substituted without detection.
             </p>
           </div>
           <div class="note">
@@ -1002,7 +998,6 @@
       (() => {
         const KEY = "ztidal-lang";
         const nodes = document.querySelectorAll("[data-zh]");
-        const ariaNodes = document.querySelectorAll("[data-aria-zh]");
         const button = document.getElementById("lang");
 
         const apply = (lang) => {
@@ -1021,15 +1016,6 @@
             const next = el.getAttribute(zh ? "data-zh" : "data-en");
             if (el.tagName === "META") el.setAttribute("content", next);
             else el.innerHTML = next;
-          }
-          for (const el of ariaNodes) {
-            if (!el.hasAttribute("data-aria-en")) {
-              el.setAttribute("data-aria-en", el.getAttribute("aria-label"));
-            }
-            el.setAttribute(
-              "aria-label",
-              el.getAttribute(zh ? "data-aria-zh" : "data-aria-en"),
-            );
           }
           button.textContent = zh ? "EN" : "中文";
           button.setAttribute(
