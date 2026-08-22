@@ -546,15 +546,18 @@
           macOS</span>. Updates itself from here after that.
         </p>
 
-        <!-- A picture of the app, replacing the mock that used to be drawn in
-             CSS. It can go stale: regenerate docs/hero.webp when the app's look
-             changes, and keep the claims on it true (see MAINTAINING.md). -->
+        <!-- A picture of the app, one per language — the switcher swaps src and
+             alt along with the text. Pictures go stale: regenerate both when
+             the app's look changes, and keep the claims printed on them true
+             (see MAINTAINING.md). -->
         <img
           class="hero-shot"
-          src="hero.webp"
+          src="hero-en.webp"
+          data-src-zh="hero-zh.webp"
           width="1672"
           height="941"
-          alt="ZtidalCode for Grok Build: several sessions in one window, a timeline that follows the reply, send while the agent is busy, paste files, Git beside the task. Unofficial, early, free, Windows only."
+          alt="ZtidalCode for Grok Build: several sessions in one window, a timeline that follows the reply, send while the agent is busy, paste files, Git beside the task. Unofficial, early access, free."
+          data-alt-zh="ZtidalCode for Grok Build：多个会话一个窗口，时间线跟着回答走，agent 忙着也能发，文件直接粘，Git 就在旁边。非官方，早期版本，免费。"
           decoding="async"
         />
       </section>
@@ -751,6 +754,16 @@ curl -fsSL https://x.ai/cli/install.sh | bash</pre>
             const next = el.getAttribute(zh ? "data-zh" : "data-en");
             if (el.tagName === "META") el.setAttribute("content", next);
             else el.innerHTML = next;
+          }
+          // Pictures with a language: the markup carries the English one, and
+          // the Chinese one rides in data-src-zh the way text rides in data-zh.
+          for (const img of document.querySelectorAll("img[data-src-zh]")) {
+            if (!img.dataset.srcEn) {
+              img.dataset.srcEn = img.getAttribute("src");
+              img.dataset.altEn = img.getAttribute("alt") || "";
+            }
+            img.src = zh ? img.dataset.srcZh : img.dataset.srcEn;
+            img.alt = zh ? img.dataset.altZh || img.dataset.altEn : img.dataset.altEn;
           }
           button.textContent = zh ? "EN" : "中文";
           button.setAttribute(

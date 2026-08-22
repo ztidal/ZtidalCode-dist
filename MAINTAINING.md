@@ -75,9 +75,11 @@ dawdle, and if a release ships with no macOS half at all, Mac clients simply sta
 **`README.md` is the usage guide.** It goes stale when a release changes how the app is used.
 **`docs/index.html` needs editing only when a feature changes** — the version, download link, size
 and installer name are fetched from the releases API at load, so a version bump needs nothing.
-The hero is a picture now, `docs/hero.webp` (1672×941, exported at WebP quality 88 from the
-owner's banner artwork), and a picture can go stale: when the app's look changes noticeably, or
-a claim printed on it stops being true ("仅 Windows" the day a Mac build ships), replace it.
+The hero is a picture now — two of them, `docs/hero-en.webp` and `docs/hero-zh.webp` (1672×941,
+WebP quality 88 from the owner's banner artwork), swapped by the language switcher along with the
+text. Pictures go stale: when the app's look changes noticeably, or a claim printed on them stops
+being true, replace both. The words "Windows only" were painted out of both on 2026-08-22, the day
+the first macOS build shipped.
 Mechanics that must survive any edit: the page is bilingual in one DOM (English is the markup,
 Chinese rides in `data-zh`, swapped by `innerHTML`, so values may carry inline markup and must
 stay well-formed); the download button is deliberately two spans (`#dl-label` belongs to the
