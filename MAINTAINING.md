@@ -32,9 +32,12 @@ Division of labour, decided 2026-08-22 (this supersedes the split written here e
 3. **Prerequisites on the Mac.** Xcode command-line tools; `rustup target add aarch64-apple-darwin
    x86_64-apple-darwin`; Node 24 and `npm ci`. Signing, in the environment and nowhere else:
    `TAURI_SIGNING_PRIVATE_KEY` = the *contents* of `ztidalcode.key` (the private Gitea backup has
-   it; Tauri ignores `_PATH`), `TAURI_SIGNING_PRIVATE_KEY_PASSWORD=""`. Apple:
-   `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID` — without code signing and
-   notarization Gatekeeper blocks the app, and there is no point uploading it.
+   it; Tauri ignores `_PATH`), `TAURI_SIGNING_PRIVATE_KEY_PASSWORD=""`. Apple, if there
+   is a Developer ID to use: `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID`,
+   and Tauri signs and notarizes. Without one the build is unsigned — it still runs, after
+   right-click → Open on macOS 14 or System Settings → Privacy & Security → Open Anyway on 15,
+   which is an acceptable hoop for a team. Say which kind shipped in your report: the guide and
+   the landing page must tell users the exact hoop they will meet.
 4. **Build, through both overlays.** The second points the updater at the macOS feed:
    ```bash
    npm run tauri -- build --config branding/ztidalcode.json --config branding/ztidalcode-mac.json \
