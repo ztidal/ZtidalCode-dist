@@ -117,6 +117,12 @@
         height: 26px;
         display: block;
       }
+      .brand-tag {
+        margin-left: 8px;
+        color: var(--subtle);
+        font-size: 13px;
+        font-weight: 400;
+      }
       .nav-links {
         display: flex;
         gap: 22px;
@@ -145,7 +151,8 @@
         color: var(--text);
       }
       @media (max-width: 640px) {
-        .nav-links a:not(.keep) {
+        .nav-links a:not(.keep),
+        .brand-tag {
           display: none;
         }
       }
@@ -639,6 +646,7 @@
         <a class="brand" href="#top">
           <img src="logo.png" alt="" width="26" height="26" />
           ZtidalCode
+          <span class="brand-tag" data-zh="为 Grok Build 打造">for Grok Build</span>
         </a>
         <nav class="nav-links">
           <a href="#features" data-zh="功能">Features</a>
