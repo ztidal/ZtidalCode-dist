@@ -8,7 +8,8 @@
     </title>
     <meta
       name="description"
-      content="Run several Grok Build tasks side by side, follow each in a live timeline, and see where your credits go. A Windows desktop app that drives xAI's coding agent over ACP."
+      content="Run several Grok Build tasks side by side, follow each in a live timeline, and see where your credits go. A macOS and Windows desktop app that drives xAI's coding agent over ACP."
+      data-zh="并排运行多个 Grok Build 任务，在实时事件流中跟进每一个任务，并看清额度花在哪里。ZtidalCode 是一款通过 ACP 驱动 xAI 编码 agent 的 macOS 与 Windows 桌面应用。"
     />
     <link rel="icon" type="image/png" href="favicon.png" />
     <meta property="og:title" content="ZtidalCode" />
@@ -272,6 +273,21 @@
       }
       .cta-note code {
         font-family: var(--mono);
+      }
+      .platform-choices {
+        margin-top: 12px;
+      }
+      .platform-download {
+        min-width: 244px;
+        justify-content: center;
+      }
+      .platform-detail {
+        color: var(--subtle);
+        font-size: 12px;
+        font-weight: 450;
+      }
+      .platform-download:hover .platform-detail {
+        color: var(--text);
       }
 
       /* ── The app, drawn rather than screenshotted ────────── */
@@ -550,6 +566,10 @@
         font-weight: 700;
         margin-bottom: 12px;
       }
+      .step .n.wide {
+        width: auto;
+        padding: 0 8px;
+      }
       .step h3 {
         margin: 0 0 8px;
         font-size: 16px;
@@ -559,6 +579,12 @@
         margin: 0 0 12px;
         color: var(--subtle);
         font-size: 14.2px;
+      }
+      .step p.platform-command {
+        margin: 14px 0 6px;
+        color: var(--text);
+        font-size: 12.5px;
+        font-weight: 600;
       }
       pre {
         margin: 0;
@@ -670,8 +696,8 @@
     <main id="top">
       <section class="wrap hero">
         <span class="eyebrow">
-          <span data-zh="Windows 桌面">Windows desktop</span> ·
-          <b id="version">latest release</b>
+          <span data-zh="macOS 与 Windows 桌面版">macOS + Windows desktop</span> ·
+          <b id="version" data-zh="最新版本">latest release</b>
         </span>
         <h1 data-zh='多个 Grok Build 任务。<br /><span class="accent">一个窗口。</span>'>
           Several Grok Build tasks.<br />
@@ -689,7 +715,7 @@
             id="download"
             href="https://github.com/ztidal/ZtidalCode-dist/releases/latest"
           >
-            <span id="dl-label" data-zh="下载 Windows 版">Download for Windows</span><span id="dl-size"></span>
+            <span id="dl-label" data-zh="查看最新版本">View latest release</span><span id="dl-size"></span>
           </a>
           <a
             class="btn ghost"
@@ -698,9 +724,27 @@
             >Read the guide</a
           >
         </div>
-        <p class="cta-note" data-zh="单用户安装，不需要管理员权限。装好之后自己从这里更新。">
-          Per-user install, no administrator. Updates itself from here after
-          that.
+        <div class="cta platform-choices" aria-label="Direct platform downloads">
+          <a
+            class="btn ghost platform-download"
+            id="download-mac"
+            href="https://github.com/ztidal/ZtidalCode-dist/releases/latest"
+          >
+            <span data-zh="macOS">macOS</span>
+            <span class="platform-detail" data-zh="Apple 芯片 DMG">Apple Silicon DMG</span><span class="platform-detail" id="download-mac-size"></span>
+          </a>
+          <a
+            class="btn ghost platform-download"
+            id="download-windows"
+            href="https://github.com/ztidal/ZtidalCode-dist/releases/latest"
+          >
+            <span data-zh="Windows">Windows</span>
+            <span class="platform-detail" data-zh="64 位 setup.exe">64-bit setup.exe</span><span class="platform-detail" id="download-windows-size"></span>
+          </a>
+        </div>
+        <p class="cta-note" data-zh="主按钮会识别这台设备；两个平台入口始终保留。应用内更新会校验签名。">
+          The main button detects this device; both platform choices stay
+          visible. In-app updates are signature-verified.
         </p>
 
         <!-- Drawn, not screenshotted: a picture of the app cannot go stale if
@@ -802,10 +846,11 @@
           </div>
           <div class="feat">
             <h3 data-zh='<span class="pip" style="background: var(--rose)"></span>直接粘贴文件'><span class="pip" style="background: var(--rose)"></span>Paste files in</h3>
-            <p data-zh="在资源管理器里复制任何东西，粘进输入框 —— 它变成一个指向文件原处的小卡片。截图也一样。不会在别处再存一份。">
-              Copy anything in Explorer and paste it into the composer — it
-              becomes a chip pointing at the file where it already lives.
-              Screenshots too. Nothing is copied to a second place.
+            <p data-zh="在 Finder 或资源管理器里复制任何东西，粘进输入框 —— 它变成一个指向文件原处的小卡片。截图也一样。不会在别处再存一份。">
+              Copy anything in Finder or Explorer and paste it into the
+              composer — it becomes a chip pointing at the file where it
+              already lives. Screenshots too. Nothing is copied to a second
+              place.
             </p>
           </div>
           <div class="feat">
@@ -837,7 +882,7 @@
       </section>
 
       <section class="wrap block" id="install">
-        <h2 data-zh="两步装好">Two steps</h2>
+        <h2 data-zh="两步装好，两个平台">Two steps, both platforms</h2>
         <p class="section-lede" data-zh="ZtidalCode 从不经手你的凭据 —— 它复用 <code>grok login</code> 建立的那个会话。">
           ZtidalCode never handles your credentials — it reuses the session
           <code>grok login</code> creates.
@@ -850,35 +895,65 @@
               Needs SuperGrok, X Premium+, or SuperGrok Heavy. Then
               <code>grok login</code> once.
             </p>
+            <p class="platform-command" data-zh="macOS">macOS</p>
+            <pre>curl -fsSL https://x.ai/cli/install.sh | bash</pre>
+            <p class="platform-command" data-zh="Windows PowerShell">Windows PowerShell</p>
             <pre>irm https://x.ai/cli/install.ps1 | iex</pre>
           </div>
           <div class="step">
-            <div class="n">2</div>
-            <h3 data-zh="安装 ZtidalCode">Install ZtidalCode</h3>
-            <p data-zh="用 <code>.exe</code> 那个。单用户安装、不需要管理员权限，此后自己更新。">
-              Take the <code>.exe</code>. It installs per-user, needs no
-              administrator, and updates itself from then on.
+            <div class="n wide">2A</div>
+            <h3 data-zh="安装 macOS 版">Install on macOS</h3>
+            <p data-zh="Apple 芯片 Mac 使用 <code>.dmg</code>。打开后把 ZtidalCode 拖进“应用程序”；首次启动请看下面的 Gatekeeper 说明。">
+              On an Apple Silicon Mac, take the <code>.dmg</code>, open it and
+              drag ZtidalCode into Applications. See the Gatekeeper note below
+              for the first launch.
             </p>
-            <pre id="latest-name">ZtidalCode_&lt;version&gt;_x64-setup.exe</pre>
+            <pre id="latest-mac-name">ZtidalCode_&lt;version&gt;_aarch64.dmg</pre>
+          </div>
+          <div class="step">
+            <div class="n wide">2B</div>
+            <h3 data-zh="安装 Windows 版">Install on Windows</h3>
+            <p data-zh="64 位 Windows 使用 <code>setup.exe</code>。它按用户安装、不需要管理员权限，此后会自动更新。MSI 只留给需要按机器部署的管理员。">
+              On 64-bit Windows, take the <code>setup.exe</code>. It installs
+              per-user with no administrator and updates itself. Keep the MSI
+              for administrator-managed, per-machine deployment.
+            </p>
+            <pre id="latest-windows-name">ZtidalCode_&lt;version&gt;_x64-setup.exe</pre>
           </div>
         </div>
       </section>
 
       <section class="wrap block">
-        <h2 data-zh="有两件事先说在前面">Two things to know first</h2>
-        <p class="section-lede" data-zh="这两件事现在听到，好过以后自己撞上。">
-          Both are easier to hear now than to discover later.
+        <h2 data-zh="有几件事先说在前面">A few things to know first</h2>
+        <p class="section-lede" data-zh="系统警告与更新签名各自解决不同的问题，现在听到比以后自己撞上更好。">
+          OS warnings and updater signatures solve different problems. Both
+          are easier to hear about now than to discover later.
         </p>
         <div class="notes">
           <div class="note">
+            <h3 data-zh="Gatekeeper：首次请右键打开">Gatekeeper: right-click Open once</h3>
+            <p data-zh="Mac 版目前没有 Apple Developer ID 签名和公证，所以普通双击可能会被拦。请在 Finder 里右键 ZtidalCode，选择<strong>打开</strong>，再确认一次<strong>打开</strong>。之后可正常启动。">
+              The Mac build is not Apple Developer ID signed or notarized, so
+              Gatekeeper may block a normal first double-click. In Finder,
+              right-click ZtidalCode, choose <strong>Open</strong>, then confirm
+              <strong>Open</strong> once. Later launches work normally.
+            </p>
+          </div>
+          <div class="note">
             <h3 data-zh="SmartScreen 会弹警告">SmartScreen will warn you</h3>
-            <p data-zh="我们的安装包没有 Authenticode 签名，所以 Windows 会说发布者未知。可以用 release 上的 <code>SHA256SUMS.txt</code> 核对你下载到的文件。应用内的更新则由 minisign 签名，并用编译进程序里的公钥校验 —— 即使这些文件是公开的，也没法被掉包。">
-              Our installers carry no Authenticode signature, so Windows calls
-              the publisher unknown. Check your download against
-              <code>SHA256SUMS.txt</code> on the release. Updates from inside
-              the app are minisign-signed and verified against a key compiled
-              into the build, so one cannot be substituted even though these
-              files are public.
+            <p data-zh="Windows 安装包目前没有 Authenticode 签名，所以系统会显示“未知发布者”。先用 release 上的 <code>SHA256SUMS.txt</code> 核对下载文件，再决定是否继续。">
+              The Windows installers are not Authenticode-signed, so the system
+              reports an unknown publisher. Check the download against
+              <code>SHA256SUMS.txt</code> on the release before continuing.
+            </p>
+          </div>
+          <div class="note">
+            <h3 data-zh="应用内更新会校验签名">In-app updates verify themselves</h3>
+            <p data-zh="macOS 与 Windows 的更新载荷都带 minisign 签名，并用编译进应用的公钥校验。它独立于 Gatekeeper 和 SmartScreen：这些 release 文件即使公开，也不能在不被发现的情况下替换。">
+              Update payloads on macOS and Windows carry minisign signatures
+              and are checked against a public key compiled into the app. This
+              is independent of Gatekeeper and SmartScreen: public release
+              files cannot be substituted without detection.
             </p>
           </div>
           <div class="note">
@@ -917,9 +992,8 @@
        * a switch happens so it can come back. `innerHTML` rather than text,
        * because several of these lines carry a `<code>` or a link.
        *
-       * The download button is deliberately split: this owns `#dl-label`, the
-       * release lookup below owns `#dl-size`. They used to be one string, and
-       * whichever ran second erased the other.
+       * The primary download button is deliberately split: language state
+       * lives on `#dl-label`; the release module writes `#dl-size` separately.
        */
       (() => {
         const KEY = "ztidal-lang";
@@ -961,7 +1035,7 @@
         } catch {
           // Private browsing; fall through to the browser's own preference.
         }
-        const wantsChinese = /^zh/i.test(navigator.language || "");
+        const wantsChinese = /^zh\b/i.test(navigator.language || "");
         apply(saved === "zh" || saved === "en" ? saved : wantsChinese ? "zh" : "en");
 
         button.addEventListener("click", () => {
@@ -969,38 +1043,7 @@
         });
       })();
 
-      /*
-       * Name the current release without rebuilding this page for each one.
-       * Everything here is decoration over links that already work: if the API
-       * is rate-limited, offline, or blocked, the button still goes to the
-       * releases page and the version still reads "latest release".
-       */
-      (async () => {
-        try {
-          const res = await fetch(
-            "https://api.github.com/repos/ztidal/ZtidalCode-dist/releases/latest",
-            { headers: { Accept: "application/vnd.github+json" } },
-          );
-          if (!res.ok) return;
-          const release = await res.json();
-          const tag = String(release.tag_name || "").replace(/^v/, "");
-          if (tag) {
-            document.getElementById("version").textContent = "v" + tag;
-          }
-          const setup = (release.assets || []).find(
-            (a) => /-setup\.exe$/.test(a.name) && !/\.sig$/.test(a.name),
-          );
-          if (setup) {
-            const button = document.getElementById("download");
-            button.href = setup.browser_download_url;
-            const mb = (setup.size / (1024 * 1024)).toFixed(1);
-            document.getElementById("dl-size").textContent = ` · ${mb} MB`;
-            document.getElementById("latest-name").textContent = setup.name;
-          }
-        } catch {
-          // Decoration only — the fallbacks in the markup stand.
-        }
-      })();
     </script>
+    <script type="module" src="release-downloads.mjs"></script>
   </body>
 </html>
