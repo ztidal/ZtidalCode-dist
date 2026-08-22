@@ -4,20 +4,20 @@ Split of responsibilities, updated 2026-08-22:
 
 | Side | Owns |
 | --- | --- |
-| **Windows PC** | Checks out the exact version and source commit locked by the Mac release owner, builds the Windows NSIS/MSI bundles and their `.sig` files, and uploads only those Windows artifacts to the prepared draft Release. It does not choose the version, regenerate the combined manifests, or publish the Release. |
-| **Mac release owner** | Coordinates the version and locked source SHA; prepares the draft; builds and signs the Apple Silicon DMG/updater bundle; combines both platforms into `latest.json` and `SHA256SUMS.txt`; verifies and publishes the complete Release; maintains `README.md` and GitHub Pages; and mirrors final artifacts to Gitea. |
+| **Windows PC** | Checks out the exact version and source commit locked by the Mac release owner, builds the Windows NSIS/MSI bundles and their `.sig` files, and uses the Mac-supplied notes to create or update the draft with only those Windows artifacts. It does not choose the version, regenerate the combined manifests, or publish the Release. |
+| **Mac release owner** | Coordinates the version, locked source SHA, release notes and draft; builds and signs the Apple Silicon DMG/updater bundle; combines both platforms into `latest.json` and `SHA256SUMS.txt`; verifies and publishes the complete Release; maintains `README.md` and GitHub Pages; and mirrors final artifacts to Gitea. |
 
 One release always means one version built from one source commit. A bundle from a different SHA does
 not belong in the draft even when its version string happens to match.
 
 ## Release handoff
 
-1. **Mac locks the release.** Record the version, tag and full source commit SHA, then prepare the
-   matching draft Release. Send those exact values to the Windows PC.
+1. **Mac locks the release.** Record the version, tag, full source commit SHA and release notes. Send
+   those exact values to the Windows PC; its helper may create the matching draft if it does not exist.
 2. **Windows builds only the locked SHA.** Verify `git rev-parse HEAD`, build with the ZtidalCode
    branding overlay, and upload the NSIS/MSI installers plus their updater signatures to the draft.
-   Report filenames, sizes and hashes back to Mac. Do not upload `latest.json` or
-   `SHA256SUMS.txt`.
+   It may update the draft title and Mac-supplied notes, but must report filenames, sizes and hashes
+   back to Mac. Do not upload `latest.json` or `SHA256SUMS.txt`.
 3. **Mac builds the same SHA.** Produce the Apple Silicon DMG, `ZtidalCode.app.tar.gz` updater payload
    and its `.sig`, then upload them to the same draft.
 4. **Mac assembles the release metadata from final bytes.** `latest.json` must name the matching Mac
@@ -57,9 +57,9 @@ than replacing it with an image.
   `#download-mac` and `#download-windows` must always remain visible so detection never traps someone
   on the wrong platform. Unknown platforms and API failures fall back to the Releases page.
 - **Asset selection lives in `docs/release-downloads.mjs`.** For releases `v0.0.36` and newer it
-  prefers an Apple Silicon (`aarch64`/`arm64`) DMG on macOS and the x64 `setup.exe` on Windows, while
-  retaining sensible platform fallbacks. Run `node --test docs/release-downloads.test.mjs` after any
-  change to this contract.
+  accepts only same-version Apple Silicon (`aarch64`/`arm64`) or explicit universal DMGs on macOS,
+  and same-version x64/x86_64 `setup.exe` files on Windows. Ambiguous architecture or stale-version
+  assets fall back to Releases. Run `node --test docs/release-downloads.test.mjs` after any change.
 - **The primary button is deliberately split.** `#dl-label` belongs to the language-aware renderer;
   `#dl-size` carries the dynamic file size. Do not merge them or let one update overwrite the other.
 - **`--brand` is derived, not picked.** It is the logo's hue at the lightness that keeps the same

@@ -50,18 +50,34 @@ test("0.0.36 chooses Apple Silicon DMG and x64 setup over generic installers", (
   assert.equal(selected.windows.name, "ZtidalCode_0.0.36_x64-setup.exe");
 });
 
-test("newer releases fall back to any DMG and setup executable", () => {
+test("newer releases accept explicit universal and x86_64 assets", () => {
   const selected = selectReleaseAssets({
     tag_name: "0.1.0",
     assets: [
       asset("ZtidalCode_0.1.0_universal.dmg"),
-      asset("ZtidalCode_0.1.0-setup.exe"),
+      asset("ZtidalCode_0.1.0_x86_64-setup.exe"),
     ],
   });
 
   assert.equal(selected.supported, true);
   assert.equal(selected.mac.name, "ZtidalCode_0.1.0_universal.dmg");
-  assert.equal(selected.windows.name, "ZtidalCode_0.1.0-setup.exe");
+  assert.equal(selected.windows.name, "ZtidalCode_0.1.0_x86_64-setup.exe");
+});
+
+test("wrong-architecture and stale-version assets fall back instead of guessing", () => {
+  const selected = selectReleaseAssets({
+    tag_name: "v0.0.37",
+    assets: [
+      asset("ZtidalCode_0.0.37_x86_64.dmg"),
+      asset("ZtidalCode_0.0.36_aarch64.dmg"),
+      asset("ZtidalCode_0.0.37_arm64-setup.exe"),
+      asset("ZtidalCode_0.0.36_x64-setup.exe"),
+    ],
+  });
+
+  assert.equal(selected.supported, true);
+  assert.equal(selected.mac, null);
+  assert.equal(selected.windows, null);
 });
 
 test("desktop platform detection supports modern and legacy browser signals", () => {
@@ -169,6 +185,8 @@ test("rendering keeps automatic and explicit platform downloads in sync", () => 
   renderDownloadModel(documentLike, buildDownloadModel(release, { platform: "MacIntel" }));
 
   assert.equal(elements.version.textContent, "v0.0.36");
+  assert.equal(elements.version.attributes.get("data-en"), "v0.0.36");
+  assert.equal(elements.version.attributes.get("data-zh"), "v0.0.36");
   assert.equal(elements.download.href, "https://example.test/ZtidalCode_0.0.36_aarch64.dmg");
   assert.equal(elements["dl-label"].innerHTML, "下载 macOS 版");
   assert.equal(elements["dl-label"].attributes.get("data-en"), "Download for macOS");
@@ -215,4 +233,92 @@ test("the landing page defaults a Chinese browser to Chinese", () => {
   });
 
   assert.equal(documentLike.documentElement.lang, "zh-CN");
+});
+
+test("dynamic version and accessible group label survive language round trips", () => {
+  const html = readFileSync(new URL("./index.html", import.meta.url), "utf8");
+  const classicScript = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)]
+    .filter((match) => !match[0].includes('type="module"'))
+    .at(-1)?.[1];
+  assert.ok(classicScript, "classic language script is present");
+
+  const makeElement = ({ content = "", attributes = {} } = {}) => {
+    let value = content;
+    const attrs = new Map(Object.entries(attributes));
+    return {
+      tagName: "SPAN",
+      get innerHTML() {
+        return value;
+      },
+      set innerHTML(next) {
+        value = String(next);
+      },
+      get textContent() {
+        return value;
+      },
+      set textContent(next) {
+        value = String(next);
+      },
+      hasAttribute(name) {
+        return attrs.has(name);
+      },
+      getAttribute(name) {
+        return attrs.get(name) ?? null;
+      },
+      setAttribute(name, next) {
+        attrs.set(name, String(next));
+      },
+    };
+  };
+  let toggle;
+  const version = makeElement({
+    content: "latest release",
+    attributes: { "data-zh": "最新版本" },
+  });
+  const group = makeElement({
+    attributes: {
+      "aria-label": "Direct platform downloads",
+      "data-aria-zh": "直接平台下载",
+    },
+  });
+  const button = {
+    textContent: "",
+    addEventListener(_name, callback) {
+      toggle = callback;
+    },
+    setAttribute() {},
+  };
+  const elements = { lang: button, version };
+  const documentLike = {
+    documentElement: { lang: "en" },
+    getElementById(id) {
+      return elements[id] || null;
+    },
+    querySelectorAll(selector) {
+      if (selector === "[data-zh]") return [version];
+      if (selector === "[data-aria-zh]") return [group];
+      return [];
+    },
+  };
+
+  vm.runInNewContext(classicScript, {
+    document: documentLike,
+    localStorage: { getItem: () => null, setItem() {} },
+    navigator: { language: "en-US" },
+  });
+  renderDownloadModel(documentLike, {
+    version: "0.0.36",
+    platform: "other",
+    primary: null,
+    mac: null,
+    windows: null,
+    releaseUrl: "https://example.test/releases/v0.0.36",
+  });
+
+  toggle();
+  assert.equal(version.textContent, "v0.0.36");
+  assert.equal(group.getAttribute("aria-label"), "直接平台下载");
+  toggle();
+  assert.equal(version.textContent, "v0.0.36");
+  assert.equal(group.getAttribute("aria-label"), "Direct platform downloads");
 });
