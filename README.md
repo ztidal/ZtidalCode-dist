@@ -207,3 +207,19 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 | `SHA256SUMS.txt` | Hashes for manual verification |
 
 Versions are our own line and deliberately do not track upstream's.
+
+---
+
+## Acknowledgements
+
+ZtidalCode is a fork of **[PinkCode](https://github.com/3xian/PinkCode)** by
+[3xian](https://github.com/3xian), released under the Apache License 2.0. The workspace you are
+using — the task rail, the timeline, the Files and Git panels, the ACP client that drives `grok` —
+is PinkCode's work. This fork hardens it for use inside a team on Windows: permission handling,
+signed updates, and the handful of things Windows does differently. It keeps the relationship to
+upstream deliberately thin, so that PinkCode's improvements keep flowing in.
+
+If ZtidalCode is useful to you, the first thanks belongs upstream.
+
+A copy of the licence is in this repository as [`LICENSE`](LICENSE). The copyright on the original
+work is 3xian's; the changes in this fork are © 2026 ztidal, under the same licence.
