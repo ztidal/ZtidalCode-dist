@@ -18,42 +18,27 @@ fetches `latest.json` anonymously, and release assets on a private repository re
 **1. Grok Build.** ZtidalCode does not bundle it and never handles your credentials — it reuses the
 session `grok login` creates. You need SuperGrok, X Premium+, or SuperGrok Heavy.
 
-macOS:
-
-```bash
-curl -fsSL https://x.ai/cli/install.sh | bash
-```
-
-Windows PowerShell:
-
 ```powershell
 irm https://x.ai/cli/install.ps1 | iex
 ```
 
 Then `grok login` once.
 
-**2. ZtidalCode.** Download the platform build from
-[Releases](https://github.com/ztidal/ZtidalCode-dist/releases).
-
-- **macOS Apple Silicon:** take `ZtidalCode_<version>_aarch64.dmg`, open it, and drag ZtidalCode into
-  Applications. The published Mac build is for Apple Silicon; it does not claim Intel support.
-- **Windows x64:** take `ZtidalCode_<version>_x64-setup.exe`. It installs per-user, needs no admin, and
-  from then on updates itself: one click, no prompt, and it relaunches when the update is in.
+**2. ZtidalCode.** Download the latest `ZtidalCode_<version>_x64-setup.exe` from
+[Releases](https://github.com/ztidal/ZtidalCode-dist/releases). It installs per-user, needs no admin, and
+from then on updates itself: one click, no prompt, and it relaunches when the update is in.
 
 > There is also an `.msi` on every release. Take it only if you are rolling ZtidalCode out for other
 > people — it installs per-machine, so it needs an administrator to install **and again for every
 > update**. The `.exe` never asks.
 
-> **macOS:** the app has no Apple Developer ID signature or notarization, so Gatekeeper may block the
-> first normal double-click. In Finder, right-click ZtidalCode, choose **Open**, then confirm **Open**
-> once. **Windows:** our installers are not Authenticode-signed, so SmartScreen warns about an unknown
-> publisher. Check either download against `SHA256SUMS.txt` on the release first:
+> Our installers are **not** Authenticode-signed, so SmartScreen will warn about an unknown publisher.
+> Check your download against `SHA256SUMS.txt` on the release first:
 > ```powershell
 > Get-FileHash .\ZtidalCode_*_x64-setup.exe -Algorithm SHA256
 > ```
-> On macOS, use `shasum -a 256 ZtidalCode_*_aarch64.dmg`. In-app updates on both platforms carry a
-> minisign signature and are verified against a key compiled into the build, so an update cannot be
-> substituted even though these assets are public.
+> In-app updates carry a minisign signature and are verified against a key compiled into the build, so
+> an update cannot be substituted even though these assets are public.
 
 ---
 
@@ -86,18 +71,13 @@ Change it for one task with the mode chip beside the composer, or `Shift+Tab` to
 **Normal → Plan → Auto → Always-approve**. The chip always names the real mode; if it does not say
 Always approve, the task will stop and ask.
 
-Change it for every task on a machine, no rebuild needed. Put this in
-`~/.ztidalcode/config.json` on macOS or `%USERPROFILE%\.ztidalcode\config.json` on Windows:
-
-```json
-{"defaultPermissionMode":"default"}
-```
-
-Windows can set the equivalent environment value instead:
+Change it for every task on a machine, no rebuild needed:
 
 ```powershell
 setx PINKCODE_DEFAULT_PERMISSION_MODE ask
 ```
+
+or put `{"defaultPermissionMode":"default"}` in `%USERPROFILE%\.ztidalcode\config.json`.
 
 Approving a **plan** and answering a question the agent asks you are always prompts, in every mode.
 
@@ -111,15 +91,13 @@ further back.
 
 ### Attaching files
 
-**Command+V** on macOS or **Ctrl+V** on Windows takes more than text.
+**Ctrl+V** in the composer takes more than text.
 
-- **Files copied in Finder or Explorer.** Copy anything, paste it in. Each becomes a chip — a thumbnail
-  for pictures, the extension for everything else. Nothing is copied anywhere: the agent is pointed at
-  the file where it already lives, whatever volume or drive that is on.
-- **A screenshot.** Copy one to the clipboard — Control+Shift+Command+4 on macOS or Win+Shift+S on
-  Windows — then paste. This is the one case with no file behind it, so it is written to
-  `~/.ztidalcode/pasted/` on macOS or `%USERPROFILE%\.ztidalcode\pasted\` on Windows, never into your
-  project.
+- **Files copied in Explorer.** Copy anything, paste it in. Each becomes a chip — a thumbnail for
+  pictures, the extension for everything else. Nothing is copied anywhere: the agent is pointed at the
+  file where it already lives, whatever drive that is on.
+- **A screenshot.** Win+Shift+S, then paste. This is the one case with no file behind it, so it is
+  written to `%USERPROFILE%\.ztidalcode\pasted\` — never into your project.
 - **Text** is untouched.
 
 The **×** on a chip's corner removes it. Paths join the message only when you send, so removing a chip
@@ -189,8 +167,6 @@ In the title bar:
 | **Theme** | Light, Dark, **Pure Dark**, **Warm Gold** and System. Pure Dark unless you say otherwise: a true black ground, for OLED panels and dark rooms. Warm Gold is that same black with the temperature flipped — gold titles, a gold-to-rose accent, your messages warm against the agent's cool. |
 | **Check for Updates** | Also runs at launch. Signature-verified before it installs. |
 
-The same small gear opens this menu on macOS and Windows. macOS also supports **Command+,**.
-
 ### Slash commands
 
 Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
@@ -207,23 +183,16 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 | `Shift+Tab` | Cycle session mode |
 | `↑` (empty composer) | Prompt history |
 | `Ctrl+H` | Fold the Files / Git panel |
-| `Command+,` (macOS) | Open Settings |
-| `Command+V` / `Ctrl+V` | Paste text, files, or a screenshot |
 | `Tab` / `↑` `↓` / `Esc` | Accept, move through, dismiss the slash menu |
 | `←` `→` on a splitter | Nudge width (`Shift` coarser, `Home` resets) |
 
 ### Where things are kept
 
-| Data | macOS | Windows |
-| --- | --- | --- |
-| Grok Build sessions and credentials | `~/.grok` | `%USERPROFILE%\.grok` |
-| ZtidalCode names, pins, archive, preferences, pasted screenshots, logs and usage cache | `~/.ztidalcode` | `%USERPROFILE%\.ztidalcode` |
-| Theme, rail widths and open project groups | Browser storage | Browser storage |
-
-ZtidalCode only reads Grok Build's directory. Its own directory is separate from upstream PinkCode's
-`.pinkcode`, so both apps can be installed side by side. Browser storage is per-machine and safe to
-lose; anything you would mind losing lives in `.ztidalcode`. Existing pins migrate there on first
-launch of 0.0.35.
+| | |
+| --- | --- |
+| `%USERPROFILE%\.grok` | Grok Build's own sessions and credentials. ZtidalCode reads these; it does not own them. |
+| `%USERPROFILE%\.ztidalcode` | Per-task permission modes, the names you give sessions, pins and the archive, pasted screenshots, logs, and the usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
+| Browser storage | Theme, rail widths, which projects are open. Per-machine, and safe to lose — anything you would mind losing (names, pins, the archive) lives in `.ztidalcode` instead. Existing pins migrate there on first launch of 0.0.35. |
 
 ---
 
@@ -231,8 +200,6 @@ launch of 0.0.35.
 
 | Asset | What it is |
 | --- | --- |
-| `ZtidalCode_<version>_aarch64.dmg` | macOS Apple Silicon installer — take this one on a Mac |
-| `ZtidalCode.app.tar.gz` | macOS updater payload; the app uses it, people normally do not |
 | `ZtidalCode_<version>_x64-setup.exe` | NSIS installer, per-user, no admin — take this one |
 | `ZtidalCode_<version>_x64_en-US.msi` | MSI for deployment tooling; per-machine, admin on every update |
 | `*.sig` | minisign signature for the matching artifact |
