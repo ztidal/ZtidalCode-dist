@@ -61,8 +61,10 @@ Division of labour, decided 2026-08-22 (this supersedes the split written here e
 7. **Verify from outside:**
    `curl -sL https://github.com/ztidal/ZtidalCode-dist/releases/latest/download/latest-mac.json`
    must show `X.Y.Z` with `darwin-aarch64` and `darwin-x86_64`.
-8. **Tell the Windows side it is up.** They add the macOS download to the landing page and the
-   guide (the first time), and note the macOS half in the release.
+8. **Tell the Windows side it is up.** The landing page finds the DMG on its own (everything
+   macOS there is gated on the asset existing); the guide and the release notes are the Windows
+   side's to update. Say whether the build is signed and notarized — the Gatekeeper instructions
+   on both documents describe an ad-hoc-signed build and must change the day that changes.
 
 Between the Windows publish and your upload, Mac clients asking for `latest-mac.json` get a 404.
 The updater treats that as "no update" and tries again later, so nothing breaks — but do not

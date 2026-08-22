@@ -18,27 +18,45 @@ fetches `latest.json` anonymously, and release assets on a private repository re
 **1. Grok Build.** ZtidalCode does not bundle it and never handles your credentials — it reuses the
 session `grok login` creates. You need SuperGrok, X Premium+, or SuperGrok Heavy.
 
+Windows, in PowerShell:
 ```powershell
 irm https://x.ai/cli/install.ps1 | iex
+```
+macOS, in Terminal:
+```bash
+curl -fsSL https://x.ai/cli/install.sh | bash
 ```
 
 Then `grok login` once.
 
-**2. ZtidalCode.** Download the latest `ZtidalCode_<version>_x64-setup.exe` from
-[Releases](https://github.com/ztidal/ZtidalCode-dist/releases). It installs per-user, needs no admin, and
-from then on updates itself: one click, no prompt, and it relaunches when the update is in.
+**2. ZtidalCode.** Download the build for your platform from
+[Releases](https://github.com/ztidal/ZtidalCode-dist/releases).
+
+- **Windows:** `ZtidalCode_<version>_x64-setup.exe`. It installs per-user, needs no admin, and from
+  then on updates itself: one click, no prompt, and it relaunches when the update is in.
+- **macOS:** `ZtidalCode_<version>_universal.dmg`. Open it and drag ZtidalCode into Applications. One
+  universal build runs on Apple Silicon and Intel; it updates itself from then on, like Windows.
+  The macOS half is built and uploaded separately, so a release may occasionally carry only the
+  Windows files — the landing page shows the macOS download only when it exists.
 
 > There is also an `.msi` on every release. Take it only if you are rolling ZtidalCode out for other
 > people — it installs per-machine, so it needs an administrator to install **and again for every
 > update**. The `.exe` never asks.
 
-> Our installers are **not** Authenticode-signed, so SmartScreen will warn about an unknown publisher.
-> Check your download against `SHA256SUMS.txt` on the release first:
+> **Windows:** our installers are **not** Authenticode-signed, so SmartScreen will warn about an
+> unknown publisher. Check your download against `SHA256SUMS.txt` on the release first:
 > ```powershell
 > Get-FileHash .\ZtidalCode_*_x64-setup.exe -Algorithm SHA256
 > ```
-> In-app updates carry a minisign signature and are verified against a key compiled into the build, so
-> an update cannot be substituted even though these assets are public.
+> **macOS:** the build is ad-hoc signed — not Apple Developer ID signed, not notarized — so Gatekeeper
+> refuses the first double-click. On macOS 14, right-click the app, choose **Open**, confirm. On
+> macOS 15, after the refusal go to **System Settings → Privacy & Security → Open Anyway** and confirm
+> once. Check the download against `SHA256SUMS-mac.txt` first:
+> ```bash
+> shasum -a 256 ZtidalCode_*_universal.dmg
+> ```
+> In-app updates on both platforms carry a minisign signature and are verified against a key compiled
+> into the build, so an update cannot be substituted even though these assets are public.
 
 ---
 
@@ -190,8 +208,8 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 
 | | |
 | --- | --- |
-| `%USERPROFILE%\.grok` | Grok Build's own sessions and credentials. ZtidalCode reads these; it does not own them. |
-| `%USERPROFILE%\.ztidalcode` | Per-task permission modes, the names you give sessions, pins and the archive, pasted screenshots, logs, and the usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
+| `%USERPROFILE%\.grok` · `~/.grok` | Grok Build's own sessions and credentials. ZtidalCode reads these; it does not own them. |
+| `%USERPROFILE%\.ztidalcode` · `~/.ztidalcode` | Per-task permission modes, the names you give sessions, pins and the archive, pasted screenshots, logs, and the usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
 | Browser storage | Theme, rail widths, which projects are open. Per-machine, and safe to lose — anything you would mind losing (names, pins, the archive) lives in `.ztidalcode` instead. Existing pins migrate there on first launch of 0.0.35. |
 
 ---

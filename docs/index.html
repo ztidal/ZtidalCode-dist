@@ -223,6 +223,18 @@
         color: var(--text);
       }
 
+      /*
+       * macOS content is shown only when the latest release actually carries a
+       * DMG — the lookup script adds `has-mac` to <html> when it finds one. A
+       * class rather than the `hidden` attribute, because the language switch
+       * rewrites innerHTML and would restore any attribute baked into a string.
+       */
+      html:not(.has-mac) [data-mac] {
+        display: none !important;
+      }
+      .has-mac [data-win-only] {
+        display: none !important;
+      }
       .cta {
         position: relative;
         display: flex;
@@ -493,7 +505,7 @@
     <main id="top">
       <section class="wrap hero">
         <span class="eyebrow">
-          <span data-zh="Windows 桌面">Windows desktop</span> ·
+          <span data-win-only data-zh="Windows 桌面">Windows desktop</span><span data-mac data-zh="macOS 与 Windows 桌面">macOS + Windows desktop</span> ·
           <b id="version">latest release</b>
         </span>
         <h1 data-zh='多个 Grok Build 任务。<br /><span class="accent">一个窗口。</span>'>
@@ -516,14 +528,22 @@
           </a>
           <a
             class="btn ghost"
+            id="download-mac"
+            data-mac
+            href="https://github.com/ztidal/ZtidalCode-dist/releases/latest"
+          >
+            <span id="dl-mac-label" data-zh="下载 macOS 版">Download for macOS</span><span id="dl-mac-size"></span>
+          </a>
+          <a
+            class="btn ghost"
             href="https://github.com/ztidal/ZtidalCode-dist#using-it"
             data-zh="查看指南"
             >Read the guide</a
           >
         </div>
-        <p class="cta-note" data-zh="单用户安装，不需要管理员权限。装好之后自己从这里更新。">
-          Per-user install, no administrator. Updates itself from here after
-          that.
+        <p class="cta-note" data-zh="Windows 上单用户安装、不需要管理员权限<span data-mac>；macOS 上是一个 DMG</span>。装好之后自己从这里更新。">
+          Per-user install on Windows, no administrator<span data-mac>; a DMG on
+          macOS</span>. Updates itself from here after that.
         </p>
 
         <!-- A picture of the app, replacing the mock that used to be drawn in
@@ -620,24 +640,30 @@
               Needs SuperGrok, X Premium+, or SuperGrok Heavy. Then
               <code>grok login</code> once.
             </p>
-            <pre>irm https://x.ai/cli/install.ps1 | iex</pre>
+            <pre># Windows — PowerShell
+irm https://x.ai/cli/install.ps1 | iex</pre>
+            <pre data-mac># macOS — Terminal
+curl -fsSL https://x.ai/cli/install.sh | bash</pre>
           </div>
           <div class="step">
             <div class="n">2</div>
             <h3 data-zh="安装 ZtidalCode">Install ZtidalCode</h3>
-            <p data-zh="用 <code>.exe</code> 那个。单用户安装、不需要管理员权限，此后自己更新。">
-              Take the <code>.exe</code>. It installs per-user, needs no
-              administrator, and updates itself from then on.
+            <p data-zh="Windows 用 <code>.exe</code>，单用户安装、不需要管理员权限。<span data-mac>Mac 打开 <code>.dmg</code>，把 ZtidalCode 拖进「应用程序」；一个 universal 包同时支持 Apple Silicon 和 Intel。</span>装好之后自己更新。">
+              Take the <code>.exe</code> on Windows — per-user, no
+              administrator.<span data-mac> On a Mac, open the <code>.dmg</code>
+              and drag ZtidalCode to Applications; one universal build runs on
+              Apple Silicon and Intel.</span> It updates itself from then on.
             </p>
             <pre id="latest-name">ZtidalCode_&lt;version&gt;_x64-setup.exe</pre>
+            <pre id="latest-mac-name" data-mac>ZtidalCode_&lt;version&gt;_universal.dmg</pre>
           </div>
         </div>
       </section>
 
       <section class="wrap block">
-        <h2 data-zh="有两件事先说在前面">Two things to know first</h2>
-        <p class="section-lede" data-zh="这两件事现在听到，好过以后自己撞上。">
-          Both are easier to hear now than to discover later.
+        <h2 data-zh="有几件事先说在前面">Things to know first</h2>
+        <p class="section-lede" data-zh="现在听到，好过以后自己撞上。">
+          Easier to hear now than to discover later.
         </p>
         <div class="notes">
           <div class="note">
@@ -649,6 +675,19 @@
               the app are minisign-signed and verified against a key compiled
               into the build, so one cannot be substituted even though these
               files are public.
+            </p>
+          </div>
+          <div class="note" data-mac>
+            <h3 data-zh="Mac 上第一次打开会被 Gatekeeper 拦下">Gatekeeper will block the first open on a Mac</h3>
+            <p data-zh="Mac 版只有 ad-hoc 签名 —— 没有 Apple Developer ID 签名，也没有公证 —— 所以第一次双击会被 macOS 拒绝。macOS 14：右键点击应用选「打开」，再确认一次。macOS 15：被拒绝后到「系统设置 → 隐私与安全性」点「仍要打开」，确认一次。先用 release 上的 <code>SHA256SUMS-mac.txt</code> 核对下载（<code>shasum -a 256</code>）。应用内更新同样由 minisign 签名并校验。">
+              The Mac build is ad-hoc signed — not Apple Developer ID signed,
+              not notarized — so macOS refuses the first double-click. On
+              macOS 14: right-click the app, choose Open, confirm. On macOS 15:
+              after the refusal, System Settings → Privacy &amp; Security →
+              Open Anyway, then confirm once. Check the download against
+              <code>SHA256SUMS-mac.txt</code> on the release first
+              (<code>shasum -a 256</code>). In-app updates are minisign-signed
+              and verified exactly as on Windows.
             </p>
           </div>
           <div class="note">
@@ -766,6 +805,23 @@
             const mb = (setup.size / (1024 * 1024)).toFixed(1);
             document.getElementById("dl-size").textContent = ` · ${mb} MB`;
             document.getElementById("latest-name").textContent = setup.name;
+          }
+          // The macOS half is uploaded separately, by a Mac, after the release
+          // exists; a release can legitimately lack it. Everything macOS on
+          // this page is therefore gated on the DMG being there.
+          const dmg = (release.assets || []).find((a) => /\.dmg$/.test(a.name));
+          if (dmg) {
+            document.documentElement.classList.add("has-mac");
+            const mac = document.getElementById("download-mac");
+            mac.href = dmg.browser_download_url;
+            const macMb = (dmg.size / (1024 * 1024)).toFixed(1);
+            document.getElementById("dl-mac-size").textContent = ` · ${macMb} MB`;
+            document.getElementById("latest-mac-name").textContent = dmg.name;
+            if (/Mac/.test(navigator.platform)) {
+              const win = document.getElementById("download");
+              win.classList.replace("primary", "ghost");
+              mac.classList.replace("ghost", "primary");
+            }
           }
         } catch {
           // Decoration only — the fallbacks in the markup stand.
