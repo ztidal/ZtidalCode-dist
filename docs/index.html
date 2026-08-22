@@ -274,195 +274,18 @@
         font-family: var(--mono);
       }
 
-      /* ── The app, drawn rather than screenshotted ────────── */
-      .shot {
-        position: relative;
+      /* ── The app, pictured ───────────────────────────────── */
+      .hero-shot {
+        display: block;
         margin: 56px auto 0;
-        max-width: 940px;
+        width: 100%;
+        max-width: 1100px;
+        height: auto;
         border: 1px solid var(--line);
         border-radius: 12px;
-        background: var(--base);
         box-shadow:
           0 0 0 1px rgb(255 255 255 / 0.02),
           0 30px 80px rgb(0 0 0 / 0.7);
-        overflow: hidden;
-        text-align: left;
-      }
-      .titlebar {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        height: 34px;
-        padding: 0 12px;
-        border-bottom: 1px solid var(--line);
-        background: var(--surface);
-        font-size: 12px;
-        color: var(--muted);
-      }
-      .titlebar .dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 999px;
-        background: var(--line-strong);
-      }
-      .panes {
-        display: grid;
-        grid-template-columns: 232px minmax(0, 1fr);
-        min-height: 330px;
-      }
-      .rail {
-        border-right: 1px solid var(--line);
-        padding: 10px 0;
-        font-size: 12px;
-      }
-      .group {
-        padding: 7px 12px 3px;
-        color: var(--muted);
-        font-size: 11.5px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .group.pinned {
-        color: var(--brand);
-      }
-      .group .count {
-        margin-left: auto;
-        font-size: 10.5px;
-        opacity: 0.8;
-      }
-      .card {
-        position: relative;
-        margin: 2px 8px;
-        padding: 7px 10px;
-        border-radius: 6px;
-        color: var(--subtle);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .card.on {
-        background: var(--overlay);
-        color: var(--text);
-      }
-      .mark {
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        margin-right: 9px;
-        vertical-align: middle;
-        box-sizing: border-box;
-        border: 1px solid var(--subtle);
-        border-radius: 50%;
-        opacity: 0.75;
-      }
-      .mark.live {
-        border-color: var(--foam);
-        opacity: 1;
-      }
-      .mark.run {
-        border-color: var(--pine);
-        background: var(--pine);
-        opacity: 1;
-      }
-      .mark.wait {
-        border-color: var(--gold);
-        background: var(--gold);
-        opacity: 1;
-      }
-
-      .stream {
-        padding: 16px 18px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-      .row {
-        display: grid;
-        grid-template-columns: 20px minmax(0, 1fr);
-        gap: 10px;
-        font-size: 12.5px;
-      }
-      .row .who {
-        font-size: 11px;
-        color: var(--muted);
-        padding-top: 2px;
-      }
-      .row .body {
-        color: var(--subtle);
-        min-width: 0;
-      }
-      .row.user .body {
-        color: var(--text);
-      }
-      .tool {
-        border-left: 2px solid var(--rose);
-        background: rgb(234 154 151 / 0.07);
-        padding: 6px 10px;
-        border-radius: 0 5px 5px 0;
-        font-family: var(--mono);
-        font-size: 11.5px;
-        color: var(--subtle);
-      }
-      .composer {
-        margin: 4px 18px 16px;
-        border: 1px solid var(--line);
-        border-radius: 9px;
-        background: var(--surface);
-        padding: 9px 10px;
-      }
-      .chips {
-        display: flex;
-        gap: 7px;
-        margin-bottom: 8px;
-      }
-      .chip {
-        position: relative;
-        width: 62px;
-        border: 1px solid var(--line);
-        border-radius: 7px;
-        padding: 4px;
-        text-align: center;
-      }
-      .chip .thumb {
-        height: 34px;
-        border-radius: 4px;
-        background: linear-gradient(135deg, var(--love), var(--gold), var(--foam));
-      }
-      .chip .thumb.file {
-        background: var(--overlay);
-        color: var(--muted);
-        font-family: var(--mono);
-        font-size: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .chip .cap {
-        font-size: 9px;
-        color: var(--muted);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        margin-top: 2px;
-      }
-      .chip .x {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        width: 14px;
-        height: 14px;
-        border-radius: 999px;
-        border: 1px solid var(--line-strong);
-        background: var(--surface);
-        color: var(--muted);
-        font-size: 9px;
-        line-height: 12px;
-      }
-      .caret {
-        color: var(--muted);
-        font-size: 12.5px;
       }
 
       /* ── Features ────────────────────────────────────────── */
@@ -703,70 +526,17 @@
           that.
         </p>
 
-        <!-- Drawn, not screenshotted: a picture of the app cannot go stale if
-             it is made of the same tokens the app is. -->
-        <div class="shot" aria-hidden="true">
-          <div class="titlebar">
-            <span class="dot"></span> ZtidalCode
-          </div>
-          <div class="panes">
-            <div class="rail">
-              <div class="group pinned">Pinned <span class="count">1</span></div>
-              <div class="card on"><span class="mark live"></span>updater end-to-end</div>
-
-              <div class="group">▾ 000_tmp <span class="count">14</span></div>
-              <div class="card run">
-                <span class="mark run"></span>refactor the parser
-              </div>
-              <div class="card wait">
-                <span class="mark wait"></span>bump deps
-              </div>
-              <div class="card"><span class="mark"></span>session rail polish</div>
-
-              <div class="group">▸ 2026_ttm <span class="count">3</span></div>
-              <div class="group">▸ Archived <span class="count">6</span></div>
-            </div>
-
-            <div>
-              <div class="stream">
-                <div class="row user">
-                  <span class="who">you</span>
-                  <span class="body">compare these two and merge the duplicate logic</span>
-                </div>
-                <div class="row">
-                  <span class="who">agent</span>
-                  <span class="body">
-                    Both define the same retry loop. I'll lift it into
-                    <code>backoff.rs</code> and have each call it.
-                  </span>
-                </div>
-                <div class="row">
-                  <span class="who"></span>
-                  <span class="tool">read_file · src/client.rs</span>
-                </div>
-                <div class="row">
-                  <span class="who"></span>
-                  <span class="tool">write · src/backoff.rs</span>
-                </div>
-              </div>
-              <div class="composer">
-                <div class="chips">
-                  <div class="chip">
-                    <div class="thumb"></div>
-                    <div class="cap">shot.png</div>
-                    <div class="x">×</div>
-                  </div>
-                  <div class="chip">
-                    <div class="thumb file">RS</div>
-                    <div class="cap">client.rs</div>
-                    <div class="x">×</div>
-                  </div>
-                </div>
-                <div class="caret">Ask anything, or paste a file…</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- A picture of the app, replacing the mock that used to be drawn in
+             CSS. It can go stale: regenerate docs/hero.webp when the app's look
+             changes, and keep the claims on it true (see MAINTAINING.md). -->
+        <img
+          class="hero-shot"
+          src="hero.webp"
+          width="1672"
+          height="941"
+          alt="ZtidalCode for Grok Build: several sessions in one window, a timeline that follows the reply, send while the agent is busy, paste files, Git beside the task. Unofficial, early, free, Windows only."
+          decoding="async"
+        />
       </section>
 
       <section class="wrap block" id="features">
