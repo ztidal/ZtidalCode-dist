@@ -1,82 +1,78 @@
-# Maintaining this repository
+# Maintaining this repository — and how the macOS half joins a release
 
-Split of responsibilities, updated 2026-08-22:
+Division of labour, decided 2026-08-22 (this supersedes the split written here earlier):
 
 | Side | Owns |
 | --- | --- |
-| **Windows PC** | Checks out the exact version and source commit locked by the Mac release owner, builds the Windows NSIS/MSI bundles and their `.sig` files, and uses the Mac-supplied notes to create or update the draft with only those Windows artifacts. It does not choose the version, regenerate the combined manifests, or publish the Release. |
-| **Mac release owner** | Coordinates the version, locked source SHA, release notes and draft; builds and signs the Apple Silicon DMG/updater bundle; combines both platforms into `latest.json` and `SHA256SUMS.txt`; verifies and publishes the complete Release; maintains `README.md` and GitHub Pages; and mirrors final artifacts to Gitea. |
+| **Windows** (release machine) | The source repository's release tooling; the Windows installers; **the release itself** — it creates and publishes `vX.Y.Z`; `latest.json`; `SHA256SUMS.txt`; the release notes; and both documents in this repository, `README.md` and `docs/index.html`. |
+| **Mac** | Building the macOS app from the release's source tag and uploading **only its own files** to the release that already exists: `ZtidalCode.app.tar.gz`, its `.sig`, the DMG, `latest-mac.json`, `SHA256SUMS-mac.txt`. Nothing else. |
 
-One release always means one version built from one source commit. A bundle from a different SHA does
-not belong in the draft even when its version string happens to match.
+## Rules for the Mac side — each one has already been broken once
 
-## Release handoff
+- **Never create, edit, delete, re-draft or re-tag a release.** `v0.0.36` was deleted by an
+  automated maintainer on 2026-08-22 and had to be republished; clients mid-download got 404s.
+- **Never upload a file you did not build.** `latest.json`, `SHA256SUMS.txt`, `*.exe`, `*.msi`
+  are the Windows side's. Your feed is `latest-mac.json`; it is a separate file on purpose, so
+  that two machines publishing into one release never write the same file.
+- **Never `--clobber`.** If an upload of yours needs replacing, say so; the Windows side decides.
+- **Do not change the source repository's release tooling or push to `hardening` unannounced.**
+  A parallel redesign of the release flow was reverted on 2026-08-22. The seam you build
+  against is described below and in `branding/README.md`; if it does not fit, say what is wrong
+  rather than replacing it.
+- **Do not edit `README.md` or `docs/index.html` here.** Tell the Windows side what changed.
 
-1. **Mac locks the release.** Record the version, tag, full source commit SHA and release notes. Send
-   those exact values to the Windows PC; its helper may create the matching draft if it does not exist.
-2. **Windows builds only the locked SHA.** Verify `git rev-parse HEAD`, build with the ZtidalCode
-   branding overlay, and upload the NSIS/MSI installers plus their updater signatures to the draft.
-   It may update the draft title and Mac-supplied notes, but must report filenames, sizes and hashes
-   back to Mac. Do not upload `latest.json` or `SHA256SUMS.txt`.
-3. **Mac builds the same SHA.** Produce the Apple Silicon DMG, `ZtidalCode.app.tar.gz` updater payload
-   and its `.sig`, then upload them to the same draft.
-4. **Mac assembles the release metadata from final bytes.** `latest.json` must name the matching Mac
-   and Windows updater payloads, URLs and minisign signatures. Include the Darwin keys the shipped
-   client accepts (`darwin-aarch64` and, while compatibility requires it, `darwin-aarch64-app`) and
-   the Windows keys emitted by the release tooling. `SHA256SUMS.txt` uses flat asset filenames so it
-   works from a normal Downloads folder.
-5. **Mac verifies before publishing.** Download the draft assets again, check every checksum and
-   updater signature, confirm the manifest version and URLs, and ensure README/Pages describe what
-   actually shipped. Publish only when both platforms are complete.
-6. **Mac finishes distribution.** Publish the GitHub Release, push the reviewed README/Pages update,
-   confirm the live Pages/download paths, and mirror the same final artifacts and hashes to Gitea.
+## The macOS procedure, per release
 
-Treat a published Release as immutable. Replacing a payload without replacing its signature,
-`latest.json` and `SHA256SUMS.txt` leaves the updater or manual verification inconsistent. If a
-published release must be repaired, coordinate the complete replacement and re-verify it as another
-release operation; never patch one asset in isolation.
+1. **Wait for the release to exist and be public.**
+   `gh release view vX.Y.Z --repo ztidal/ZtidalCode-dist --json isDraft` must say `false`.
+   The Windows side creates it; you join it.
+2. **Check out exactly that source.** The Windows release tags the build commit:
+   `git fetch origin --tags && git checkout vX.Y.Z`. `branding/ztidalcode.json` must read
+   `X.Y.Z` — the feed you are about to write claims that version, so the build must be it.
+3. **Prerequisites on the Mac.** Xcode command-line tools; `rustup target add aarch64-apple-darwin
+   x86_64-apple-darwin`; Node 24 and `npm ci`. Signing, in the environment and nowhere else:
+   `TAURI_SIGNING_PRIVATE_KEY` = the *contents* of `ztidalcode.key` (the private Gitea backup has
+   it; Tauri ignores `_PATH`), `TAURI_SIGNING_PRIVATE_KEY_PASSWORD=""`. Apple:
+   `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID` — without code signing and
+   notarization Gatekeeper blocks the app, and there is no point uploading it.
+4. **Build, through both overlays.** The second points the updater at the macOS feed:
+   ```bash
+   npm run tauri -- build --config branding/ztidalcode.json --config branding/ztidalcode-mac.json \
+     --target universal-apple-darwin
+   ```
+5. **Write the feed.** Use the same notes the Windows release shipped with
+   (`gh release view vX.Y.Z --json body -q .body > NOTES.md`):
+   ```bash
+   node scripts/make-updater-json.mjs --platform macos --arch universal --notes-file NOTES.md \
+     --bundle-dir src-tauri/target/universal-apple-darwin/release/bundle
+   ```
+   That verifies the `.sig` against the archive's bytes and checks the binary inside the `.app`
+   carries *our* updater key before writing `latest-mac.json` and `SHA256SUMS-mac.txt`. If it
+   refuses, the build is wrong, not the script.
+6. **Upload your five files to the existing release.**
+   ```bash
+   B=src-tauri/target/universal-apple-darwin/release/bundle
+   gh release upload vX.Y.Z --repo ztidal/ZtidalCode-dist latest-mac.json SHA256SUMS-mac.txt \
+     $B/macos/ZtidalCode.app.tar.gz $B/macos/ZtidalCode.app.tar.gz.sig $B/dmg/ZtidalCode_X.Y.Z_universal.dmg
+   ```
+7. **Verify from outside:**
+   `curl -sL https://github.com/ztidal/ZtidalCode-dist/releases/latest/download/latest-mac.json`
+   must show `X.Y.Z` with `darwin-aarch64` and `darwin-x86_64`.
+8. **Tell the Windows side it is up.** They add the macOS download to the landing page and the
+   guide (the first time), and note the macOS half in the release.
 
-## The public documents, and how each goes stale
+Between the Windows publish and your upload, Mac clients asking for `latest-mac.json` get a 404.
+The updater treats that as "no update" and tries again later, so nothing breaks — but do not
+dawdle, and if a release ships with no macOS half at all, Mac clients simply stay where they are.
 
-**`README.md` is the usage guide.** It goes stale when a release changes how the app is installed or
-used — a platform is added, a control moves, a behaviour changes, or a claim stops being true. Keep
-macOS and Windows instructions together so neither silently becomes the second-class copy.
+## Windows-side notes on the two documents here
 
-**`docs/index.html` is the landing page.** Its version, asset names, file sizes and download URLs come
-from the latest GitHub Release at load. A plain version bump needs no hand-edited version string, but a
-new asset naming convention or platform promise does require a page and test update. The app picture
-in the hero is drawn in CSS from the same tokens the app uses, not screenshotted, so restyle it rather
-than replacing it with an image.
-
-## Landing page mechanics you must not break
-
-- **Bilingual, one DOM.** English is the markup; Chinese rides in `data-zh` attributes. The switcher
-  stores the English in `data-en` and swaps `innerHTML`, so `data-zh` values may carry inline markup
-  and must remain well-formed HTML. New user-visible text needs both languages.
-- **Automatic plus explicit downloads.** `#download` is the browser-detected primary action.
-  `#download-mac` and `#download-windows` must always remain visible so detection never traps someone
-  on the wrong platform. Unknown platforms and API failures fall back to the Releases page.
-- **Asset selection lives in `docs/release-downloads.mjs`.** For releases `v0.0.36` and newer it
-  accepts only same-version Apple Silicon (`aarch64`/`arm64`) or explicit universal DMGs on macOS,
-  and same-version x64/x86_64 `setup.exe` files on Windows. Ambiguous architecture or stale-version
-  assets fall back to Releases. Run `node --test docs/release-downloads.test.mjs` after any change.
-- **The primary button is deliberately split.** `#dl-label` belongs to the language-aware renderer;
-  `#dl-size` carries the dynamic file size. Do not merge them or let one update overwrite the other.
-- **`--brand` is derived, not picked.** It is the logo's hue at the lightness that keeps the same
-  contrast on this page's background as the colour it replaced (currently `#77b5e9`). If the logo
-  changes, re-derive it rather than eyeballing it.
-- **Security copy is part of the release contract.** Mac instructions must retain the Finder
-  right-click **Open** Gatekeeper path until the app is Developer ID signed and notarized. Windows
-  instructions must retain the SmartScreen warning until the installers are Authenticode-signed.
-  Both platforms must say that in-app updates are minisign-verified.
-- `SHA256SUMS.txt` is promised on every release with flat filenames. If the asset set changes, update
-  the checksum generator and the guide together.
-- Never hand-edit a version into the page. If the displayed version is wrong, the latest Release or
-  release lookup is wrong; fix that source of truth.
-
-## Style
-
-Both documents explain *why* alongside *what*, in complete sentences, and say true things about the
-shipped app rather than intended things about a planned one. When the app and the document disagree,
-the document is the bug — fix it to match the app, or report the app if it is the one that broke its
-word.
+**`README.md` is the usage guide.** It goes stale when a release changes how the app is used.
+**`docs/index.html` needs editing only when a feature changes** — the version, download link, size
+and installer name are fetched from the releases API at load, so a version bump needs nothing.
+Mechanics that must survive any edit: the page is bilingual in one DOM (English is the markup,
+Chinese rides in `data-zh`, swapped by `innerHTML`, so values may carry inline markup and must
+stay well-formed); the download button is deliberately two spans (`#dl-label` belongs to the
+language switcher, `#dl-size` to the releases-API script — they once overwrote each other);
+`--brand` is the logo's hue at a lightness solved for contrast, not eyeballed; the SmartScreen
+section promises `SHA256SUMS.txt` with flat filenames, which the release script generates.
