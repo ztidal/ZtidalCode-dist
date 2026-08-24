@@ -32,8 +32,10 @@ Then `grok login` once.
 **2. ZtidalCode.** Download the build for your platform from
 [Releases](https://github.com/ztidal/ZtidalCode-dist/releases).
 
-- **Windows:** `ZtidalCode_<version>_x64-setup.exe`. It installs per-user, needs no admin, and from
-  then on updates itself: one click, no prompt, and it relaunches when the update is in.
+- **Windows:** `ZtidalCode_<version>_x64-setup.exe`. It installs per-user as `ZtidalCode.exe`, needs
+  no admin, and from then on updates itself: one click, no prompt, and it relaunches when the update
+  is in. (v0.0.38 renamed the binary; a taskbar pin that still pointed at `PinkCode.exe` will not
+  follow.)
 - **macOS:** `ZtidalCode_<version>_universal.dmg`. Open it and drag ZtidalCode into Applications. One
   universal build runs on Apple Silicon and Intel; it updates itself from then on, like Windows.
   The macOS half is built and uploaded separately, so a release may occasionally carry only the
