@@ -109,11 +109,11 @@ further back.
 
 ### Attaching files
 
-**Ctrl+V** in the composer takes more than text.
+**Ctrl+V** in the composer takes more than text. **Dragging a file in from Explorer** does the same.
 
-- **Files copied in Explorer.** Copy anything, paste it in. Each becomes a chip — a thumbnail for
-  pictures, the extension for everything else. Nothing is copied anywhere: the agent is pointed at the
-  file where it already lives, whatever drive that is on.
+- **Files from Explorer.** Copy and paste, or drag them onto the composer. Each becomes a chip — a
+  thumbnail for pictures, the extension for everything else. Nothing is copied anywhere: the agent is
+  pointed at the file where it already lives, whatever drive that is on.
 - **A screenshot.** Win+Shift+S, then paste. This is the one case with no file behind it, so it is
   written to `%USERPROFILE%\.ztidalcode\pasted\` — never into your project.
 - **Text** is untouched.
@@ -183,6 +183,7 @@ In the title bar:
 | --- | --- |
 | **New Window** | A second window for a different project. Each is its own process; they share your session and preference files safely. |
 | **Theme** | Light, Dark, **Pure Dark**, **Warm Gold** and System. Pure Dark unless you say otherwise: a true black ground, for OLED panels and dark rooms. Warm Gold is that same black with the temperature flipped — gold titles, a gold-to-rose accent, your messages warm against the agent's cool. |
+| **Codex pet** | Optional always-on-top companion. It reads Codex pet packages from `~/.codex/pets` and plays the atlas against the focused task — working, waiting for you, ready for review, failed, idle. Drag it, hover to jump. Off until you turn it on. |
 | **Check for Updates** | Also runs at launch. Signature-verified before it installs. |
 
 ### Slash commands
