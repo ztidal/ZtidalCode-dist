@@ -38,9 +38,8 @@ Then `grok login` once.
   follow.)
 - **macOS:** `ZtidalCode_<version>_universal.dmg`. Open it and drag ZtidalCode into Applications. One
   universal build runs on Apple Silicon and Intel; it updates itself from then on, like Windows.
-  The latest release (v0.0.38) includes this DMG. The Mac files still land after the Windows half,
-  so a brand-new tag can be Windows-only for a few hours; the landing page shows the macOS download
-  only when the DMG is actually on the release.
+  The Mac files land after the Windows half, so the current tag can be Windows-only until then —
+  the landing page shows the macOS download only when the DMG is actually on the latest release.
 
 > There is also an `.msi` on every release. Take it only if you are rolling ZtidalCode out for other
 > people — it installs per-machine, so it needs an administrator to install **and again for every
@@ -104,8 +103,15 @@ Approving a **plan** and answering a question the agent asks you are always prom
 
 ### The timeline
 
-Opening a session lands on the latest activity. Scroll up and a **Jump to latest** button appears.
-Filter chips narrow the stream to one kind of event; **Load earlier activity** pages backwards.
+Opening a session lands on the latest activity. Scroll up and a **Jump to latest** button appears
+in the middle of the stream. Filter chips narrow the stream to one kind of event; **Load earlier
+activity** pages backwards.
+
+On the **User** filter, click a message to jump to that same turn in **All**. In All, your messages
+sit on the right as a conversation; the agent's work stays on the left.
+
+When a turn finishes while the window is in the background, a number appears on the taskbar icon.
+Focusing the window clears it.
 
 The timeline follows a reply as it is written, and lets go the moment you scroll up to read something
 further back.
@@ -186,7 +192,7 @@ In the title bar:
 | --- | --- |
 | **New Window** | A second window for a different project. Each is its own process; they share your session and preference files safely. |
 | **Theme** | Light, Dark, **Pure Dark**, **Warm Gold** and System. Pure Dark unless you say otherwise: a true black ground, for OLED panels and dark rooms. Warm Gold is that same black with the temperature flipped — gold titles, a gold-to-rose accent, your messages warm against the agent's cool. |
-| **Codex pet** | Optional always-on-top companion. It reads Codex pet packages from `~/.codex/pets` and plays the atlas against the focused task — working, waiting for you, ready for review, failed, idle. Drag it, hover to jump. Off until you turn it on. |
+| **Codex pet** | Optional always-on-top companion. Two packages ship with the app (刀盾 / 牛来) and are copied into `~/.codex/pets` if those folders are missing. Extra Codex pets in that folder show up too. Plays the atlas against the focused task — working, waiting for you, ready for review, failed, idle. Drag it, hover to jump. Off until you turn it on. |
 | **Check for Updates** | Also runs at launch. Signature-verified before it installs. |
 
 ### Slash commands
