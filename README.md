@@ -38,8 +38,9 @@ Then `grok login` once.
   follow.)
 - **macOS:** `ZtidalCode_<version>_universal.dmg`. Open it and drag ZtidalCode into Applications. One
   universal build runs on Apple Silicon and Intel; it updates itself from then on, like Windows.
-  The macOS half is built and uploaded separately, so a release may occasionally carry only the
-  Windows files — the landing page shows the macOS download only when it exists.
+  The latest release (v0.0.38) includes this DMG. The Mac files still land after the Windows half,
+  so a brand-new tag can be Windows-only for a few hours; the landing page shows the macOS download
+  only when the DMG is actually on the release.
 
 > There is also an `.msi` on every release. Take it only if you are rolling ZtidalCode out for other
 > people — it installs per-machine, so it needs an administrator to install **and again for every
