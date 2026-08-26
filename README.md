@@ -7,9 +7,10 @@ ZtidalCode drives it over [ACP](https://spec.acp.dev) and runs no agent loop of 
 **[ztidal.github.io/ZtidalCode-dist](https://ztidal.github.io/ZtidalCode-dist/)** — what it looks like
 and what it does, in one page. Send that to someone before this one.
 
-This repository holds the installers. The source is private; it is a hardened fork of
-[PinkCode](https://github.com/3xian/PinkCode). This repo is public for one reason: the in-app updater
-fetches `latest.json` anonymously, and release assets on a private repository require authentication.
+This repository holds the installers and the update feed. The source is
+[ztidal/ZtidalCode](https://github.com/ztidal/ZtidalCode) — Apache-2.0, a hardened fork of
+[PinkCode](https://github.com/3xian/PinkCode). The two are kept apart because a release is something
+you publish, not a branch you push, and the in-app updater reads this repository anonymously.
 
 ---
 

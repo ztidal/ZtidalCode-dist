@@ -8,7 +8,7 @@
     </title>
     <meta
       name="description"
-      content="Run several Grok Build tasks side by side, follow each in a live timeline, and see where your credits go. A Windows desktop app that drives xAI's coding agent over ACP."
+      content="Open source desktop workspace for Grok Build. Run several tasks side by side, follow each in a live timeline, and see where your credits go. Apache-2.0."
     />
     <link rel="icon" type="image/png" href="favicon.png" />
     <meta property="og:title" content="ZtidalCode" />
@@ -221,6 +221,19 @@
         font-family: var(--mono);
         font-size: 0.9em;
         color: var(--text);
+      }
+      .lede-oss {
+        position: relative;
+        max-width: 620px;
+        margin: -18px auto 28px;
+        color: var(--foam);
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .lede-oss a {
+        color: var(--foam);
+        text-decoration: underline;
+        text-underline-offset: 3px;
       }
 
       /*
@@ -493,6 +506,12 @@
           >
           <a
             class="keep"
+            href="https://github.com/ztidal/ZtidalCode"
+            data-zh="源码"
+            >Source</a
+          >
+          <a
+            class="keep"
             href="https://github.com/ztidal/ZtidalCode-dist/releases"
             data-zh="版本"
             >Releases</a
@@ -505,6 +524,8 @@
     <main id="top">
       <section class="wrap hero">
         <span class="eyebrow">
+          <span data-zh="开源 · Apache-2.0">Open source · Apache-2.0</span>
+          ·
           <span data-win-only data-zh="Windows 桌面">Windows desktop</span><span data-mac data-zh="macOS 与 Windows 桌面">macOS + Windows desktop</span> ·
           <b id="version">latest release</b>
         </span>
@@ -516,6 +537,10 @@
           A desktop workspace for xAI's coding agent. <code>grok</code> stays in
           charge — ZtidalCode drives it over ACP and runs no agent loop of its
           own.
+        </p>
+        <p class="lede-oss" data-zh='开源，Apache-2.0。源码在 <a href="https://github.com/ztidal/ZtidalCode">ztidal/ZtidalCode</a>。'>
+          Open source, Apache-2.0. The source is
+          <a href="https://github.com/ztidal/ZtidalCode">ztidal/ZtidalCode</a>.
         </p>
 
         <div class="cta">
@@ -534,6 +559,12 @@
           >
             <span id="dl-mac-label" data-zh="下载 macOS 版">Download for macOS</span><span id="dl-mac-size"></span>
           </a>
+          <a
+            class="btn ghost"
+            href="https://github.com/ztidal/ZtidalCode"
+            data-zh="查看源码"
+            >View source</a
+          >
           <a
             class="btn ghost"
             href="https://github.com/ztidal/ZtidalCode-dist#using-it"
@@ -720,9 +751,11 @@ curl -fsSL https://x.ai/cli/install.sh | bash</pre>
 
     <footer>
       <div class="wrap foot">
-        <span data-zh='<a href="https://github.com/3xian/PinkCode">PinkCode</a> 的加固分支，Apache-2.0。'>
-          A hardened fork of
-          <a href="https://github.com/3xian/PinkCode">PinkCode</a>, Apache-2.0.
+        <span data-zh='开源，Apache-2.0。<a href="https://github.com/ztidal/ZtidalCode">源码</a> · <a href="https://github.com/3xian/PinkCode">PinkCode</a> 的加固分支。'>
+          Open source, Apache-2.0.
+          <a href="https://github.com/ztidal/ZtidalCode">Source</a>
+          · a hardened fork of
+          <a href="https://github.com/3xian/PinkCode">PinkCode</a>.
         </span>
         <span>
           <a href="https://github.com/ztidal/ZtidalCode-dist/releases">Releases</a>
