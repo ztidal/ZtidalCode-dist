@@ -79,7 +79,7 @@ left open.
 - **New Task** in the rail header lets you pick any folder.
 - Type in the filter box to search across every session — results come back as a flat list.
 
-A new task starts on the newest model the agent offers, at its highest reasoning effort, and — read the
+A new task starts on the newest model the agent offers, at **Extra High** effort, and — read the
 next section — **with full permissions**.
 
 ### Permissions
